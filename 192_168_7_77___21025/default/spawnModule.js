@@ -1,4 +1,4 @@
-module.exports = function(spawnName)
+module.exports = function(spawnName, buildingMaxHealthVar)
 {
 	var spawn = Game.spawns[spawnName];
 
@@ -23,7 +23,7 @@ module.exports = function(spawnName)
 	var upgradeLimit = 3;
 	var armyLimit = 0;
 	var controlLimit = 0;
-	var repairLimit = 0;
+	var repairLimit = 1;
 	var testLimit = 0;
 
 	//if there is no construction sites, no building units
@@ -38,7 +38,7 @@ module.exports = function(spawnName)
 	}
 
 	//if there is no building to repair, no repair units
-	var buildingMaxHealth = 300000;
+	var buildingMaxHealth = buildingMaxHealthVar;
 	var repairBuildings = spawn.room.find(FIND_STRUCTURES, 
 	{
 	    filter : function(object)
@@ -316,13 +316,13 @@ module.exports = function(spawnName)
 	    
 	    if (truckFactor >= 1)
 	    {
-	    var name = spawn.createCreep(truckBody);
-	    
-	    if (name != -6 && name != -4)
-	    {
-	        Memory.creeps[name].role = 'truck';
-	        Memory.creeps[name].job = 'collect';
-	    }
+		    var name = spawn.createCreep(truckBody);
+		    
+		    if (name != -6 && name != -4)
+		    {
+		        Memory.creeps[name].role = 'truck';
+		        Memory.creeps[name].job = 'collect';
+		    }
 	    }
 	}
 	else if (minerCount < minerLimit)
@@ -440,7 +440,7 @@ module.exports = function(spawnName)
 	    //console.log("Are you trying to repair?");
 	    var name = spawn.createCreep(repairBody);
 	    //console.log(name);
-	    if(name >= 0)
+	    if(name != -6 && name != -4)
 	    {
 	        Memory.creeps[name].role = 'repair';
 	    }

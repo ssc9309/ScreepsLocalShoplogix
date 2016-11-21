@@ -156,22 +156,34 @@ module.exports = function(creep)
                         creep.moveTo(droppedEnergyTarget);
                     }
                 }
+                //if there is no dropped energy, then try to grab the energy from the container.
+                //if no container, then the miner
                 else
                 {
-                    if (minerCreep.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                    var container = creep.pos.findClosestByPath(FIND_STRUCTURES,
                     {
-                        creep.moveTo(minerCreep);
+                        filter: function(object)
+                        { 
+                            //console.log(object.structureType);
+                            return object.structureType == STRUCTURE_CONTAINER && object.store[RESOURCE_ENERGY] > 0;
+                        }
+                    });
+                    //console.log(container);
+                    if (container)
+                    {
+                        if (container.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(container);
+                        }
+                    }
+                    else
+                    {
+                        if (minerCreep.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(minerCreep);
+                        }
                     }
                 }
-                
-                /*
-                var transferResult = 
-                if (transferResult == OK)
-                {
-                    
-                    
-                }
-                */
             }
             else
             {

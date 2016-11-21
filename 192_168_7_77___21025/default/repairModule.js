@@ -28,8 +28,10 @@ module.exports = function(creep, maxHealth)
                     
                 if (targetExt)
                 {
-                    creep.moveTo(targetExt);
-                    targetExt.transferEnergy(creep);
+                    if (targetExt.transferEnergy(creep) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetExt);
+                    }
                 }
     	    }
     	    /*
@@ -120,7 +122,7 @@ module.exports = function(creep, maxHealth)
             {
                 filter: function(object)
                 {
-                    if(object.structureType == STRUCTURE_RAMPART || object.structureType == STRUCTURE_WALL)
+                    if(object.structureType == STRUCTURE_RAMPART || object.structureType == STRUCTURE_WALL || object.structureType == STRUCTURE_CONTAINER)
                     {
                         if (object.hits < object.hitsMax && object.hits < maxHealth)
                         {
@@ -133,8 +135,10 @@ module.exports = function(creep, maxHealth)
             
             if (targetStructure)
             {
-                creep.moveTo(targetStructure);
-                creep.repair(targetStructure);
+                if (creep.repair(targetStructure) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(targetStructure);
+                }
             }
             else
             {
@@ -156,8 +160,10 @@ module.exports = function(creep, maxHealth)
                 
                 if (targetStructure)
                 {
-                    creep.moveTo(targetStructure);
-                    creep.repair(targetStructure);
+                    if (creep.repair(targetStructure) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetStructure);
+                    }
                 }
             }
         }
@@ -168,5 +174,5 @@ module.exports = function(creep, maxHealth)
     }
     
     
-    creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
+    //creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
 }

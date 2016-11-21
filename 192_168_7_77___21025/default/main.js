@@ -13,6 +13,8 @@ var spawnModule = require('spawnModule')
 
 var allSpawns = Game.spawns;
 
+var buildingMaxHealth = 300000;
+
 for (var spawnName in allSpawns)
 {
 	spawnModule(spawnName);
