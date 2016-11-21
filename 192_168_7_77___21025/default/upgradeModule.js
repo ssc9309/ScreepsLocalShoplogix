@@ -51,8 +51,10 @@
                     
                 if (targetExt)
                 {
-                    creep.moveTo(targetExt);
-                    targetExt.transferEnergy(creep);
+                    if (targetExt.transferEnergy(creep) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetExt);
+                    }
                 }
     	    }
         }
@@ -67,8 +69,10 @@
         {
             if(creep.room.controller) 
             {
-                creep.moveTo(creep.room.controller);
-                creep.upgradeController(creep.room.controller);
+                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(creep.room.controller);
+                }
             }
         }
         else

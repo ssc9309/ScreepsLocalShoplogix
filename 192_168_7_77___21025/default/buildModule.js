@@ -26,8 +26,10 @@ module.exports = function (creep)
                     
                 if (targetExt)
                 {
-                    creep.moveTo(targetExt);
-                    targetExt.transferEnergy(creep);
+                    if (targetExt.transferEnergy(creep) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetExt);
+                    }
                 }
     	    }
     	    
@@ -68,8 +70,10 @@ module.exports = function (creep)
 	        var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
             if(target) 
             {
-                creep.moveTo(target);
-                creep.build(target);
+                if (creep.build(target) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(target);
+                }
                 creep.say("Building");
             }
 	    }

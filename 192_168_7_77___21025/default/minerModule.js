@@ -131,9 +131,11 @@ module.exports = function(creep)
     
     if (creep.carry.energy < creep.carryCapacity || creep.carry.energy == 0)
     {
-        creep.moveTo(resources[Memory.creeps[creep.name].number]);
         //creep.moveTo(resources[0]);
-        creep.harvest(resources[Memory.creeps[creep.name].number]);
+        if (creep.harvest(resources[Memory.creeps[creep.name].number]) == ERR_NOT_IN_RANGE)
+        {
+            creep.moveTo(resources[Memory.creeps[creep.name].number]);
+        }
     }
     if (creep.carry.energy >= creep.carryCapacity)
     {

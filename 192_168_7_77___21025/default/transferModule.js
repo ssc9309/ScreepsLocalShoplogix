@@ -18,8 +18,11 @@ module.exports = function(creep)
                 if (Game.structures[s].structureType == 'storage')
                 {
                     var storage = Game.structures[s];
-                    creep.moveTo(storage);
-                    storage.transferEnergy(creep);
+
+                    if (storage.transferEnergy(creep) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(storage);
+                    }
                     break;
                 }
             }
@@ -70,8 +73,10 @@ module.exports = function(creep)
                 
             if (targetExt)
             {
-                creep.moveTo(targetExt);
-                creep.transferEnergy(targetExt);
+                if (creep.transferEnergy(targetExt) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(targetExt);
+                }
             }
         }
         else

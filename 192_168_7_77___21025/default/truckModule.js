@@ -151,13 +151,17 @@ module.exports = function(creep)
                 
                 if (droppedEnergyTarget)
                 {
-                    creep.moveTo(droppedEnergyTarget);
-                    creep.pickup(droppedEnergyTarget);
+                    if (creep.pickup(droppedEnergyTarget) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(droppedEnergyTarget);
+                    }
                 }
                 else
                 {
-                    creep.moveTo(minerCreep);
-                    minerCreep.transfer(creep, RESOURCE_ENERGY);
+                    if (minerCreep.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(minerCreep);
+                    }
                 }
                 
                 /*
@@ -219,8 +223,10 @@ module.exports = function(creep)
                     
                     if (targetExt)
                     {
-                        creep.moveTo(targetExt);
-                        creep.transfer(targetExt, RESOURCE_ENERGY);
+                        if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(targetExt);
+                        }
                     }
                     else
                     //if (isExtensionsFull)
@@ -230,8 +236,11 @@ module.exports = function(creep)
                             if (Game.structures[name].structureType == 'storage')
                             {
                                 var storage = Game.structures[name];
-                                creep.moveTo(storage);
-                                creep.transfer(storage, RESOURCE_ENERGY);
+                                
+                                if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                                {
+                                    creep.moveTo(storage);
+                                }
                             }
                         }
                     }
