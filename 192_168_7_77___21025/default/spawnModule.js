@@ -19,8 +19,8 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	var transferLimit = 0;
 	var minerLimit = 2;
 	var truckLimit = 4;
-	var buildLimit = 2;
-	var upgradeLimit = 3;
+	var buildLimit = 1;
+	var upgradeLimit = 2;
 	var armyLimit = 0;
 	var controlLimit = 0;
 	var repairLimit = 1;
@@ -435,11 +435,11 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	        Memory.creeps[name].role = 'control';
 	    }
 	}
-	else if (repairCount < repairLimit)
+	else if (repairCount < repairLimit && repairFactor >= 1)
 	{
 	    //console.log("Are you trying to repair?");
 	    var name = spawn.createCreep(repairBody);
-	    //console.log(name);
+	    //console.log(repairBody);
 	    if(name != -6 && name != -4)
 	    {
 	        Memory.creeps[name].role = 'repair';

@@ -5,7 +5,9 @@
  * You can import it from another modules like this:
  * var mod = require('buildModule'); // -> 'a thing'
  */
- 
+var creep_getEnergy = require('creep_getEnergyModule');
+
+
 module.exports = function (creep) 
 {
     creep.say("B");
@@ -16,21 +18,7 @@ module.exports = function (creep)
     	{
     	    if (creep.room.energyAvailable >= 300)
     	    {
-    	        var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
-                {
-                    filter: function(object)
-                    {
-                        return (object.energy >= object.energyCapacity);
-                    }
-                });
-                    
-                if (targetExt)
-                {
-                    if (targetExt.transferEnergy(creep) == ERR_NOT_IN_RANGE)
-                    {
-                        creep.moveTo(targetExt);
-                    }
-                }
+    	        creep_getEnergy(creep);
     	    }
     	    
     	    /*

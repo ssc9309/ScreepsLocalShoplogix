@@ -5,6 +5,8 @@
  * You can import it from another modules like this:
  * var mod = require('repairModule'); // -> 'a thing'
  */
+
+var creep_getEnergy = require('creep_getEnergyModule');
  
 module.exports = function(creep, maxHealth)
 {
@@ -18,21 +20,7 @@ module.exports = function(creep, maxHealth)
     	{
     	    if (creep.room.energyAvailable >= 300)
     	    {
-    	        var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
-                {
-                    filter: function(object)
-                    {
-                        return (object.energy >= object.energyCapacity);
-                    }
-                });
-                    
-                if (targetExt)
-                {
-                    if (targetExt.transferEnergy(creep) == ERR_NOT_IN_RANGE)
-                    {
-                        creep.moveTo(targetExt);
-                    }
-                }
+    	        creep_getEnergy(creep);
     	    }
     	    /*
     	    if (Game.spawns.Spawn1.energy == Game.spawns.Spawn1.energyCapacity)

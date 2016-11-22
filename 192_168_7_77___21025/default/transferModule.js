@@ -19,7 +19,7 @@ module.exports = function(creep)
                 {
                     var storage = Game.structures[s];
 
-                    if (storage.transferEnergy(creep) == ERR_NOT_IN_RANGE)
+                    if (storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                     {
                         creep.moveTo(storage);
                     }
@@ -73,7 +73,7 @@ module.exports = function(creep)
                 
             if (targetExt)
             {
-                if (creep.transferEnergy(targetExt) == ERR_NOT_IN_RANGE)
+                if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                 {
                     creep.moveTo(targetExt);
                 }
