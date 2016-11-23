@@ -1,24 +1,22 @@
 module.exports = function(spawnName, buildingMaxHealthVar)
 {
 	var spawn = Game.spawns[spawnName];
-
-	var transferModule = require('transferModule');
-	var minerModule = require('minerModule');
-	var truckModule = require('truckModule');
-	var buildModule = require('buildModule');
-	var upgradeModule = require('upgradeModule');
-	var armyModule = require('armyModule');
-	var controlModule = require('controlModule');
-	var repairModule = require('repairModule');
-	var testModule = require('testModule');
-	var analysisModule = require('analysisModule');
-	//analysisModule(Game.spawns.Spawn1);
 	
-
+	var towerModule = require('towerModule');
+    var towers = spawn.room.find(FIND_STRUCTURES, 
+    {
+        filter: 
+        {
+            structureType: STRUCTURE_TOWER, my: true
+        }
+    });
+    
+    towers.forEach(towerModule.run);
+    
 	//Desired Population Number
 	var transferLimit = 0;
 	var minerLimit = 2;
-	var truckLimit = 4;
+	var truckLimit = 2;
 	var buildLimit = 1;
 	var upgradeLimit = 2;
 	var armyLimit = 0;
@@ -26,6 +24,11 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	var repairLimit = 1;
 	var testLimit = 0;
 
+    if (towers)
+    {
+        repairLimit = 0;
+    }
+    
 	//if there is no construction sites, no building units
 	//console.log(Game.spawns[spawn].room);
 	var constSites = spawn.room.find(FIND_CONSTRUCTION_SITES);
