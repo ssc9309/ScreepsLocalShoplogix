@@ -17,7 +17,8 @@
 
     if (storageVar)
     {
-        if (storageVar.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+        //if (storageVar.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+        if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
         {
             creep.moveTo(storageVar);
         }
@@ -31,10 +32,12 @@
                 return (object.energy >= object.energyCapacity);
             }
         });
-            
+        
         if (targetExt)
         {
-            if (targetExt.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+            //console.log(targetExt);
+            //if (targetExt.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+            if (creep.withdraw(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
             {
                 creep.moveTo(targetExt);
             }

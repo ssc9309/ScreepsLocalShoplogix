@@ -8,7 +8,7 @@
  
 module.exports = function(creep)
 {
-    creep.say('T');
+    creep.say('T' + creep.body.length/2);
 
     //similar to miner, assign a number
     if (Memory.creeps[creep.name].number != 0 && Memory.creeps[creep.name].number != 1)
@@ -147,7 +147,10 @@ module.exports = function(creep)
             
             if (creep.carry.energy < creep.carryCapacity)
             {
-                var droppedEnergyTarget = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+                //var droppedEnergyTarget = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+                //hank. this is temporary...
+                var droppedEnergyTarget = null;
+                
                 
                 if (droppedEnergyTarget)
                 {
@@ -228,7 +231,7 @@ module.exports = function(creep)
                     {
                         filter: function(object)
                         {
-                            return (object.energy < object.energyCapacity);
+                            return (object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN) && (object.energy < object.energyCapacity);
                         }
                     }
                     );
@@ -252,6 +255,7 @@ module.exports = function(creep)
                                 if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                                 {
                                     creep.moveTo(storage);
+                                    break;
                                 }
                             }
                         }

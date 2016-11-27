@@ -6,7 +6,7 @@ var upgradeModule = require('upgradeModule');
 var armyModule = require('armyModule');
 var controlModule = require('controlModule');
 var repairModule = require('repairModule');
-var testModule = require('testModule');
+var rangeBuilderModule = require('rangeBuilderModule');
 var analysisModule = require('analysisModule');
 
 var spawnModule = require('spawnModule')
@@ -24,41 +24,52 @@ for (var spawnName in allSpawns)
 for(var name in Game.creeps)
 {
     var creep = Game.creeps[name];
+    var creepRole = creep.memory.role;
 
-    if (Memory.creeps[name].role == 'miner')
+    if (creepRole == 'miner')
     {
+        //console.log(creep.memory.role);
         minerModule(creep);
     }
-    else if (Memory.creeps[name].role == 'truck')
+    else if (creepRole == 'truck')
     {
         truckModule(creep);
     }
-    else if (Memory.creeps[name].role == 'build')
+    else if (creepRole == 'build')
     {
         buildModule(creep);
     }
-    else if (Memory.creeps[name].role == 'upgrade')
+    else if (creepRole == 'upgrade')
     {
         upgradeModule(creep);
     }
-    else if (Memory.creeps[name].role == 'army')
+    else if (creepRole == 'army')
     {
         armyModule(creep);
     }
-    else if (Memory.creeps[name].role == 'transfer')
+    else if (creepRole == 'transfer')
     {
         transferModule(creep);
     }
-    else if (Memory.creeps[name].role == 'control')
+    else if (creepRole == 'control')
     {
         controlModule(creep);
     }
-    else if (Memory.creeps[name].role == 'repair')
+    else if (creepRole == 'repair')
     {
         repairModule(creep, buildingMaxHealth);
     }
-    else if (Memory.creeps[name].role == 'test')
+    else if (creepRole == 'test')
     {
         testModule(creep);
     }
 }
+
+for (var name in Game.flags)
+{
+    var flag = Game.flags[name];
+    //console.log(flag.name + " " + flag.color + " " + flag.pos.x + " " + flag.pos.y);
+    //console.log(COLOR_WHITE);
+
+    //flag memory to set which room to use, and how many workers to send?
+} 

@@ -8,7 +8,16 @@
  
 module.exports = function(creep)
 {
-    creep.say('M');
+    var workBodyCount = 0;
+    for (var i in creep.body)
+    {
+        if (creep.body[i].type == WORK)
+        {
+            workBodyCount++;
+        }
+    }
+    
+    creep.say('M'+workBodyCount);
      
      //creep.say(Memory.creeps[creep.name].role);
      
@@ -125,6 +134,7 @@ module.exports = function(creep)
     }
     
     var resources = creep.room.find(FIND_SOURCES);//[Memory.creeps[creep.name].number];
+    //console.log(resources);
     
     //creep.say(Memory.creeps[creep.name].number);
     //creep.say()

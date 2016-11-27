@@ -10,7 +10,17 @@ var creep_getEnergy = require('creep_getEnergyModule');
 
 module.exports = function (creep) 
 {
-    creep.say("B");
+    var workBodyCount = 0;
+    for (var i in creep.body)
+    {
+        if (creep.body[i].type == WORK)
+        {
+            workBodyCount++;
+        }
+    }
+       
+    //creep.say("U"+creep.body.length/3);
+    creep.say("B"+workBodyCount);
     
     if (Memory.creeps[creep.name].job == 'collect')
     {

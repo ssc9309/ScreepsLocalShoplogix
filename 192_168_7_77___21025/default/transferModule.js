@@ -62,11 +62,12 @@ module.exports = function(creep)
     	    }
     	    */
     	    
+            //fill up the extension and spawn first
     	    var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
             {
                 filter: function(object)
                 {
-                    return (object.energy < object.energyCapacity);
+                    return (object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN) && (object.energy < object.energyCapacity);
                 }
             }
             );
@@ -76,6 +77,26 @@ module.exports = function(creep)
                 if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                 {
                     creep.moveTo(targetExt);
+                }
+            }
+            //then fill up whatever
+            else
+            {
+                var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+                {
+                    filter: function(object)
+                    {
+                        return (object.energy < object.energyCapacity);
+                    }
+                }
+                );
+                    
+                if (targetExt)
+                {
+                    if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetExt);
+                    }
                 }
             }
         }

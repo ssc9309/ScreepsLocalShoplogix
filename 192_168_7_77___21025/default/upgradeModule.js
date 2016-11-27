@@ -10,7 +10,25 @@
  
  module.exports = function (creep) {
        
-    creep.say("U");
+    var workBodyCount = 0;
+    for (var i in creep.body)
+    {
+        if (creep.body[i].type == WORK)
+        {
+            workBodyCount++;
+        }
+    }
+
+    creep.say("U"+workBodyCount);
+
+    //if it has no job assigned, then collect;
+    if (creep.memory.job)
+    {
+    }
+    else
+    {
+        creep.memory.job = 'collect';
+    }
 
     //fill until full
     if (Memory.creeps[creep.name].job == 'collect')
@@ -19,7 +37,25 @@
         {
 	        if (creep.room.energyAvailable >= 300)
     	    {
-    	        creep_getEnergy(creep);
+                var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+                {
+                    filter: function(object)
+                    {
+                        return object.structureType == STRUCTURE_LINK && (object.energy > 0);
+                    }
+                });
+
+                if (targetExt)
+                {
+                    if (creep.withdraw(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(targetExt);
+                    }
+                }
+                else
+                {
+        	        creep_getEnergy(creep);
+                }
     	    }
         }
         else

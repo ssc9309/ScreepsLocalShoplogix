@@ -58,9 +58,11 @@ module.exports = function(creep)
                 //console.log(cmdStructure);
                 //console.log(cmdStructure.structureType);
                 
-                creep.attack(cmdStructure);
-                creep.rangedAttack(cmdStructure);
-                creep.moveTo(cmdStructure);
+                //creep.attack(cmdStructure);
+                if (creep.rangedAttack(cmdStructure) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(cmdStructure);
+                }
             }
             else if (cmdPos[x].type == 'terrain')
             {
