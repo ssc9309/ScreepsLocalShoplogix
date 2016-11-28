@@ -11,6 +11,7 @@ module.exports = function(spawn)
 	var controlCount = 0;
 	var repairCount = 0;
 	var testCount = 0;
+	var rangeBuilderCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -61,6 +62,10 @@ module.exports = function(spawn)
 			{
 			    testCount++;
 			}
+			else if (creepRole == 'rangeBuilder')
+			{
+			    rangeBuilderCount++;
+			}
 		}
 	}
 
@@ -88,6 +93,7 @@ module.exports = function(spawn)
 	}
 	else if (upgradeCount < spawnMemory.upgradeLimit)
 	{
+		//Hank. 20 upgrade parts = 2 max resource mining
 		bodyTypeToMake = 'upgrade';
 	}
 	else if (repairCount < spawnMemory.repairLimit)
@@ -97,6 +103,14 @@ module.exports = function(spawn)
 	else if (armyCount < spawnMemory.armyLimit)
 	{
 		bodyTypeToMake = 'army';
+	}
+	else if (controlCount < spawnMemory.controlLimit)
+	{
+		bodyTypeToMake = 'control';
+	}
+	else if (rangeBuilderCount < spawnMemory.rangeBuilderLimit)
+	{
+		bodyTypeToMake = 'rangeBuilder';
 	}
 	//console.log(bodyTypeToMake);
 	if (bodyTypeToMake != '')
@@ -136,22 +150,66 @@ module.exports = function(spawn)
 					}
 				}
 			}
-			else if (bodyTypeToMake == 'build' || bodyTypeToMake == 'upgrade' || bodyTypeToMake == 'repair')
+			else if (	bodyTypeToMake == 'build' || 
+						bodyTypeToMake == 'upgrade' || 
+						bodyTypeToMake == 'repair' ||
+						bodyTypeToMake == 'rangeBuilder')
 			{
 				body.push(MOVE);
 				body.push(CARRY);
 				body.push(WORK);
 			}
+			else if (bodyTypeToMake == 'army')
+			{
+				body.push(TOUGH);
+				body.push(RANGED_ATTACK);
+				body.push(MOVE);
+			}
+			else if (bodyTypeToMake == 'control')
+			{
+				if(body.length == 0)
+				{
+					body.push(CLAIM);
+					body.push(MOVE);
+				}
+				else
+				{
+					body.push(MOVE);
+				}
+			}
 		}while(spawn.canCreateCreep(body) == OK);
-
 
 		body = _.clone(prevBody);
 
-		//console.log(body.length);
+		body.sort();
+		body.reverse();
+
+		//console.log(body);
 
 		if (body.length > 0)
 		{
-			spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name});
+			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'miner')
+			{
+				var existingCreeps = spawn.room.find(FIND_MY_CREEPS,
+				{
+					filter: function(object)
+					{
+						return object.memory.role == bodyTypeToMake && object.memory.number == 0;
+					}
+				});
+				if (existingCreeps)
+				{
+					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: spawn.room.find(FIND_SOURCES).length-1 });
+				}
+				else
+				{
+					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: 0 });
+				}
+			}
+			else
+			{
+				spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name});
+			}
 		}
 	}
 }

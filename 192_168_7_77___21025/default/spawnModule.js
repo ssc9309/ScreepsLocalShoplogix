@@ -38,7 +38,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	}
     });
 
-    if (minersVar)
+    if (minersVar && minersVar.length == spawn.room.find(FIND_SOURCES).length)
     {
     	for (var i in minersVar)
     	{
@@ -51,9 +51,10 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     			}
     		}
 
-    		if (workBodyCount < 6 && spawn.canCreateCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]))
+    		if (workBodyCount < 6 && spawn.canCreateCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]) == OK)
     		{
     			minersVar[i].suicide();
+    			break;
     		}
     	}
     }
@@ -74,6 +75,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.testLimit = 0;
     	spawn.room.memory.buildingMaxHealth = 300000;
     	spawn.room.memory.wallRepairLimit = 0;
+    	spawn.room.memory.rangeBuilderLimit = 0;
     }
 
 	//if there is no construction sites, no building units

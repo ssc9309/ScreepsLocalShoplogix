@@ -37,13 +37,13 @@ module.exports = function(link, spawn)
         {
             var linkTo = spawn.room.lookForAt('structure', memoryX, memoryY)[0];
 
-            if (linkTo)
-            {
-                link.transferEnergy(linkTo);
-            }
-            else
+            if (!(linkTo))
             {
                 console.log("There is no link at the spot");
+            }
+            else if (linkTo.energy <= 0)
+            {
+                link.transferEnergy(linkTo);
             }
         }
     }

@@ -63,6 +63,10 @@ for(var name in Game.creeps)
     {
         testModule(creep);
     }
+    else if (creepRole == 'rangeBuilder')
+    {
+        rangeBuilderModule(creep);
+    }
 }
 
 for (var name in Game.flags)

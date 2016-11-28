@@ -13,17 +13,24 @@ module.exports = function(creep)
     
     var controlFlag = Game.flags.controlFlag;
     
+    //console.log(controlFlag.pos.roomName);
+
+    
     if (controlFlag)
     {
-        creep.moveTo(controlFlag);
-    }
-    else
-    {
-        if (!creep.room.controller.my)
+        if (controlFlag.pos.roomName != creep.room.name)
         {
-            creep.moveTo(creep.room.controller);
-            var result = creep.claimController(creep.room.controller);
-            creep.say(result);
+            creep.moveTo(controlFlag);
+        }
+        else
+        {
+            if (!creep.room.controller.my)
+            {
+                if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(creep.room.controller);
+                }
+            }
         }
     }
     

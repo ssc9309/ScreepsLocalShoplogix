@@ -8,43 +8,96 @@
  
 module.exports = function(creep)
 {
-    creep.say("test");
+    creep.say("R_B");
     
-    var testFlag = Game.flags.test;
+    var testFlag = Game.flags.rangeBuild;
     var building = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
     
-    
-    if (building)
+
+    //console.log(creep.carry.energy);
+
+    if (testFlag)
     {
-        if(Memory.creeps[creep.name].job == 'mine')
+        if (testFlag.pos.roomName != creep.room.name)
         {
-            if (creep.carry.energy < creep.carryCapacity)
+            if (creep.carry.energy <= 0)
             {
-                var source = creep.pos.findClosestByPath(FIND_SOURCES);
-                creep.moveTo(source);
-                creep.harvest(source);
+                if (creep.room.storage)
+                {
+                    if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(creep.room.storage);
+                    }
+                }
             }
             else
             {
-                Memory.creeps[creep.name].job = 'build';
+                creep.moveTo(testFlag);
             }
         }
         else
         {
-            if (creep.carry.energy > 0)
+            if (building)
             {
-                
-                creep.moveTo(building);
-                creep.build(building);
-            }
+                if(Memory.creeps[creep.name].job == 'mine')
+                {
+                    if (creep.carry.energy < creep.carryCapacity)
+                    {
+                        var droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY,
+                            {
+                                filter: function(object)
+                                {
+                                    return object.energy >= creep.carryCapacity;
+                                }
+                            });
+
+                        if (droppedEnergy)
+                        {
+                            if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE)
+                            {
+                                creep.moveTo(droppedEnergy);
+                            }
+                        }
+                        else
+                        {
+                            var source = creep.pos.findClosestByPath(FIND_SOURCES,
+                            {
+                                filter: function(object)
+                                {
+                                    return object.energy > 0;
+                                }
+                            });
+                            
+                            if (source && creep.harvest(source) == ERR_NOT_IN_RANGE)
+                            {
+                                creep.moveTo(source);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Memory.creeps[creep.name].job = 'build';
+                    }
+                }
+                else
+                {
+                    if (creep.carry.energy > 0)
+                    {
+                        if (creep.build(building) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(building);
+                        }
+                    }
+                    else
+                    {
+                        Memory.creeps[creep.name].job = 'mine';
+                    }
+                }
+            }     
             else
             {
-                Memory.creeps[creep.name].job = 'mine';
+                creep.moveTo(testFlag);
             }
         }
-    }     
-    else
-    {
-        creep.moveTo(testFlag);
     }
 }

@@ -41,9 +41,21 @@ module.exports = function(creep)
     
     var hostileCreep = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
     var moveResult = 0;
-    
+    var mySpawnInRoom = creep.room.find(FIND_MY_STRUCTURES,
+    {
+        filter: { structureType: STRUCTURE_SPAWN }
+    });
+
+    if (creep.ticksToLive < 100 && mySpawnInRoom)
+    {
+        //console.log(mySpawnInRoom[0].renewCreep(creep) );
+        if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
+        {
+            creep.moveTo(mySpawnInRoom[0]);
+        }
+    }
     //priorities cmd order first
-    if(cmdFlag)
+    else if(cmdFlag)
     {
         //var cmdPos = creep.pos.look(cmdFlag);
         var cmdPos = cmdFlag.pos.look();
