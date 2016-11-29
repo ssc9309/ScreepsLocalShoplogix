@@ -197,13 +197,14 @@ module.exports = function(spawn)
 						return object.memory.role == bodyTypeToMake && object.memory.number == 0;
 					}
 				});
-				if (existingCreeps)
+				
+				if (existingCreeps.length <= 0)
 				{
-					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: spawn.room.find(FIND_SOURCES).length-1 });
+					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: 0 });
 				}
 				else
 				{
-					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: 0 });
+					spawn.createCreep(body, null, { role: bodyTypeToMake, spawnRoom: spawn.room.name, number: spawn.room.find(FIND_SOURCES).length-1 });
 				}
 			}
 			else
