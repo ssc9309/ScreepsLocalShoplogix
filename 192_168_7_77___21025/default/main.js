@@ -19,7 +19,7 @@ for (var spawnName in allSpawns)
 {
 	spawnModule(spawnName);
 }
-
+ 
 //activate the creeps
 for(var name in Game.creeps)
 {

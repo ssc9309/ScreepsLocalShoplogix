@@ -73,7 +73,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.controlLimit = 0;
     	spawn.room.memory.repairLimit = 0;
     	spawn.room.memory.testLimit = 0;
-    	spawn.room.memory.buildingMaxHealth = 300000;
+    	spawn.room.memory.buildingMaxHealth = 5000;
     	spawn.room.memory.wallRepairLimit = 0;
     	spawn.room.memory.rangeBuilderLimit = 0;
     }

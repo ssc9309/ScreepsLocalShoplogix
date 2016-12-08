@@ -41,7 +41,7 @@ module.exports = function(link, spawn)
             {
                 console.log("There is no link at the spot");
             }
-            else if (linkTo.energy <= 0)
+            else if (link.energy >= (linkTo.energyCapacity - linkTo.energy))
             {
                 link.transferEnergy(linkTo);
             }
