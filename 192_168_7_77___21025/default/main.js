@@ -7,7 +7,6 @@ var armyModule = require('armyModule');
 var controlModule = require('controlModule');
 var repairModule = require('repairModule');
 var rangeBuilderModule = require('rangeBuilderModule');
-var analysisModule = require('analysisModule');
 
 var spawnModule = require('spawnModule')
 

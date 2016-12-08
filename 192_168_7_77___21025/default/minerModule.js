@@ -35,10 +35,12 @@ module.exports = function(creep)
             creep.moveTo(resources[Memory.creeps[creep.name].number]);
         }
     }
+    
     if (creep.carry.energy >= creep.carryCapacity)
     {
         creep.drop(RESOURCE_ENERGY);
     }
+    
     //else
     //{
         //creep.dropEnergy();
