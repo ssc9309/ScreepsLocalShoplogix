@@ -30,31 +30,6 @@ module.exports = function (creep)
     	    {
     	        creep_getEnergy(creep);
     	    }
-    	    
-    	    /*
-    	    if (Game.spawns.Spawn1.energy == Game.spawns.Spawn1.energyCapacity)
-    	    {
-    		    creep.moveTo(Game.spawns.Spawn1);
-    		    Game.spawns.Spawn1.transferEnergy(creep);
-    	    }
-    	    else
-    	    {
-    	        var extensions = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, 
-    	        {
-                    filter: { structureType: STRUCTURE_EXTENSION }
-                });
-                
-                for(var x in extensions)
-                {
-                    var extension = extensions[x];
-                    if (extension.energy == extension.energyCapacity)
-                    {
-                        creep.moveTo(extension);
-    		            extension.transferEnergy(creep);
-                    }
-                }
-    	    }
-    	    */
     	}
     	else
     	{
@@ -79,8 +54,5 @@ module.exports = function (creep)
 	    {
 	        Memory.creeps[creep.name].job = 'collect';
 	    }
-	    
-		
-        //creep.say("End");
 	}
 }

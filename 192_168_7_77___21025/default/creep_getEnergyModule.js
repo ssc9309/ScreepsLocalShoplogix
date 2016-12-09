@@ -6,40 +6,62 @@
  * var mod = require('harvestor'); // -> 'a thing'
  */
  
- module.exports = function (creep) {
-    var storageVar = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+module.exports = function (creep) 
+{
+    var droppedEnergyTarget = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY,
     {
         filter: function(object)
         {
-            return (object.structureType == STRUCTURE_STORAGE && object.store[RESOURCE_ENERGY] > 0);
+            return object.energy >= creep.carryCapacity && object.room.name == creep.room.name;
         }
     });
 
-    if (storageVar)
+    if (droppedEnergyTarget)
     {
-        //if (storageVar.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-        if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+        if (creep.pickup(droppedEnergyTarget) == ERR_NOT_IN_RANGE)
         {
-            creep.moveTo(storageVar);
+            creep.moveTo(droppedEnergyTarget);
         }
     }
     else
     {
-        var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+        var storageVar = creep.room.storage;
+        /*
+        var storageVar = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
         {
             filter: function(object)
             {
-                return (object.energy >= object.energyCapacity);
+                return (object.structureType == STRUCTURE_STORAGE && object.store[RESOURCE_ENERGY] > 0);
             }
         });
-        
-        if (targetExt)
+        */
+    
+        if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
         {
-            //console.log(targetExt);
-            //if (targetExt.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-            if (creep.withdraw(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+            //if (storageVar.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+            if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
             {
-                creep.moveTo(targetExt);
+                creep.moveTo(storageVar);
+            }
+        }
+        else
+        {
+            var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+            {
+                filter: function(object)
+                {
+                    return (object.energy >= object.energyCapacity);
+                }
+            });
+            
+            if (targetExt)
+            {
+                //console.log(targetExt);
+                //if (targetExt.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                if (creep.withdraw(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(targetExt);
+                }
             }
         }
     }

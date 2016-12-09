@@ -9,21 +9,18 @@
 module.exports = function(creep)
 {
     creep.say('Tf');
+    
     if (Memory.creeps[creep.name].job == 'collect')
     {
         if (creep.carry.energy < creep.carryCapacity)
         {
-            for(var s in Game.structures)
+            var storageVar = creep.room.storage;
+            
+            if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
             {
-                if (Game.structures[s].structureType == 'storage')
+                if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                 {
-                    var storage = Game.structures[s];
-
-                    if (storage.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-                    {
-                        creep.moveTo(storage);
-                    }
-                    break;
+                    creep.moveTo(storageVar);
                 }
             }
         }
@@ -67,10 +64,10 @@ module.exports = function(creep)
             {
                 filter: function(object)
                 {
-                    return (object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN) && (object.energy < object.energyCapacity);
+                    return (object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN) && 
+                            (object.energy < object.energyCapacity);
                 }
-            }
-            );
+            });
                 
             if (targetExt)
             {

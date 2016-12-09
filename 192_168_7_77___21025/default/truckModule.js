@@ -16,24 +16,24 @@ module.exports = function(creep)
 
     
     //find the correct miner creep
-    var minerCreep = null;
-    for (var name in Game.creeps)
+    var minerCreep = creep.room.find(FIND_MY_CREEPS, 
     {
-        var minerCreep = Game.creeps[name];
-        if (minerCreep.memory.role == 'miner' && 
-            minerCreep.memory.number == creep.memory.number &&
-            minerCreep.memory.spawnRoom == creep.memory.spawnRoom)
-        {
-            minerCreep = Game.creeps[name];
-            break;
-        }
+       filter: function(object) 
+       {
+           return object.memory.role == 'miner' && 
+            object.memory.number == creep.memory.number &&
+            object.memory.spawnRoom == creep.memory.spawnRoom &&
+            !(object.spawning);
+       }
+    });
+    if (minerCreep[0])
+    {
+        minerCreep = minerCreep[0];
     }
-    
+
     //if the minercreep is found
     if (minerCreep)
     {
-        //creep.say(minerCreep.name);
-        //creep.say(Memory.creeps[creep.name].job);
         if (creepMemory.job == 'collect')
         {
             //collect until full
@@ -47,10 +47,7 @@ module.exports = function(creep)
                         return object.energy >= creep.carryCapacity && object.room.name == creep.room.name;
                     }
                 });
-                //hank. this is temporary...
-                //var droppedEnergyTarget = null;
-                
-                //console.log(droppedEnergyTarget.energy);
+
                 if (droppedEnergyTarget)
                 {
                     if (creep.pickup(droppedEnergyTarget) == ERR_NOT_IN_RANGE)
@@ -128,6 +125,28 @@ module.exports = function(creep)
                         if (creep.transfer(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                         {
                             creep.moveTo(storageVar);
+                        }
+                    }
+                    else
+                    {
+                        var tower = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+                        {
+                            filter: function(object)
+                            {
+                                return object.structureType == STRUCTURE_TOWER && object.energy < object.energyCapacity;
+                            }
+                        });
+                        if (tower)
+                        {
+                            if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                            {
+                                creep.moveTo(tower);
+                            }
+                        }
+                        //if there is really nothing else to do, then fill yourself back up...
+                        else
+                        {
+                            creepMemory.job = 'collect';
                         }
                     }
                 }

@@ -38,7 +38,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	}
     });
 
-    if (minersVar && minersVar.length == spawn.room.find(FIND_SOURCES).length)
+    if (minersVar && minersVar.length >= spawn.room.memory.minerLimit)
     {
     	for (var i in minersVar)
     	{
@@ -76,6 +76,8 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.buildingMaxHealth = 5000;
     	spawn.room.memory.wallRepairLimit = 0;
     	spawn.room.memory.rangeBuilderLimit = 0;
+    	spawn.room.memory.linkX = -1;
+    	spawn.room.memory.linkY = -1;
     }
 
 	//if there is no construction sites, no building units
@@ -87,7 +89,10 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	}
 	else
 	{
-		spawn.room.memory.buildLimit = 1;
+		if (spawn.room.memory.buildLimit <= 0)
+		{
+		    spawn.room.memory.buildLimit++;
+		}
 	}
 
 	//if there is no building to be repaired, or we have a tower, then no repair creeps
