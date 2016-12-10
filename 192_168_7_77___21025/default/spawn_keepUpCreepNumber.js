@@ -12,6 +12,7 @@ module.exports = function(spawn)
 	var repairCount = 0;
 	var testCount = 0;
 	var rangeBuilderCount = 0;
+	var rangeMinerCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -66,6 +67,10 @@ module.exports = function(spawn)
 			{
 			    rangeBuilderCount++;
 			}
+			else if (creepRole == 'rangeMiner')
+			{
+				rangeMinerCount++;
+			}
 		}
 	}
 
@@ -112,6 +117,11 @@ module.exports = function(spawn)
 	{
 		bodyTypeToMake = 'rangeBuilder';
 	}
+	else if (rangeMinerCount < spawnMemory.rangeMinerLimit)
+	{
+		bodyTypeToMake = 'rangeMiner';
+	}
+
 	//console.log(bodyTypeToMake);
 	if (bodyTypeToMake != '')
 	{
@@ -170,6 +180,24 @@ module.exports = function(spawn)
 				if(body.length == 0)
 				{
 					body.push(CLAIM);
+					body.push(MOVE);
+				}
+				else
+				{
+					body.push(MOVE);
+				}
+			}
+			else if (bodyTypeToMake == 'rangeMiner')
+			{
+				if (body.length == 0)
+				{
+					body.push(WORK);
+					body.push(MOVE);
+					body.push(CARRY);
+				}
+				else if (body.length < 7)
+				{
+					body.push(WORK);
 					body.push(MOVE);
 				}
 				else

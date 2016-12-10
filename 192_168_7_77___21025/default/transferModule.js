@@ -8,7 +8,7 @@
  
 module.exports = function(creep)
 {
-    creep.say('Tf');
+    creep.say('Tf' + creep.body.length / 2);
     
     if (Memory.creeps[creep.name].job == 'collect')
     {
@@ -32,33 +32,7 @@ module.exports = function(creep)
     else
     {
         if (creep.carry.energy > 0)
-        {
-            /*
-            if (Game.spawns.Spawn1.energy < Game.spawns.Spawn1.energyCapacity)
-	        {
-		        creep.moveTo(Game.spawns.Spawn1);
-		        creep.transferEnergy(Game.spawns.Spawn1)
-	        }
-	        else
-	        {
-	            var extensions = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, 
-                {
-                    filter: { structureType: STRUCTURE_EXTENSION }
-                });
-            
-                for(var x in extensions)
-                {
-                    var extension = extensions[x];
-                    if (extension.energy < extension.energyCapacity)
-                    {
-                        creep.moveTo(extension);
-	                    creep.transferEnergy(extension);
-	                    break;
-                    }
-                }
-    	    }
-    	    */
-    	    
+        {   
             //fill up the extension and spawn first
     	    var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
             {

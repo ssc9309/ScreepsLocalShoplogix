@@ -7,6 +7,7 @@ var armyModule = require('armyModule');
 var controlModule = require('controlModule');
 var repairModule = require('repairModule');
 var rangeBuilderModule = require('rangeBuilderModule');
+var rangeMinerModule = require('rangeMinerModule');
 
 var spawnModule = require('spawnModule');
 
@@ -71,11 +72,16 @@ module.exports.loop = function()
         {
             rangeBuilderModule(creep);
         }
+        else if (creepRole == 'rangeMiner')
+        {
+            rangeMinerModule(creep);
+        }
     }
     
     console.log("CreepModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
     
+    /*
     for (var name in Game.flags)
     {
         var flag = Game.flags[name];
@@ -84,4 +90,5 @@ module.exports.loop = function()
     
         //flag memory to set which room to use, and how many workers to send?
     } 
+    */
 }

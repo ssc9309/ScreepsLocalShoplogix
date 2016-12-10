@@ -78,6 +78,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.rangeBuilderLimit = 0;
     	spawn.room.memory.linkX = -1;
     	spawn.room.memory.linkY = -1;
+    	spawn.room.memory.rangeMinerLimit = 0;
     }
 
 	//if there is no construction sites, no building units
@@ -124,7 +125,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 		spawn.room.memory.repairLimit = 1;
 	}
 
-
+	var storageVar = spawn.room.storage;
 	//make transfer creep only if there is a storage and empty extentions
 	var storageBuildings = spawn.room.find(FIND_MY_STRUCTURES,
 	{
@@ -140,6 +141,24 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	else
 	{
 	    spawn.room.memory.transferLimit = 0;
+	}
+
+	if (storageVar)
+	{
+		if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2)
+		{
+			if (spawn.room.memory.upgradeLimit == 1)
+			{
+				spawn.room.memory.upgradeLimit++;
+			}
+		}
+		else
+		{
+			if (spawn.room.memory.upgradeLimit == 2)
+			{
+				spawn.room.memory.upgradeLimit--;
+			}
+		}
 	}
 
 	//if it's not spawning, make sure spawn has all the creeps
