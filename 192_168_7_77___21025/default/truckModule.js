@@ -20,10 +20,9 @@ module.exports = function(creep)
     {
        filter: function(object) 
        {
-           return object.memory.role == 'miner' && 
+           return (!(object.spawning)) && object.memory.role == 'miner' && 
             object.memory.number == creep.memory.number &&
-            object.memory.spawnRoom == creep.memory.spawnRoom &&
-            !(object.spawning);
+            object.memory.spawnRoom == creep.memory.spawnRoom;
        }
     });
     if (minerCreep[0])
