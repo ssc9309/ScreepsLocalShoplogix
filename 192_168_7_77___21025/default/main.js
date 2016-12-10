@@ -13,6 +13,7 @@ var spawnModule = require('spawnModule');
 module.exports.loop = function()
 {
     var allSpawns = Game.spawns;
+    var startCPU = Game.cpu.getUsed();
     
     //var buildingMaxHealth = 300000;
     
@@ -20,6 +21,8 @@ module.exports.loop = function()
     {
     	spawnModule(spawnName);
     }
+    console.log("SpawnModule: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    startCPU = Game.cpu.getUsed();
      
     //activate the creeps
     for(var name in Game.creeps)
@@ -69,6 +72,9 @@ module.exports.loop = function()
             rangeBuilderModule(creep);
         }
     }
+    
+    console.log("CreepModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    startCPU = Game.cpu.getUsed();
     
     for (var name in Game.flags)
     {
