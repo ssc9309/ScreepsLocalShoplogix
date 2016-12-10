@@ -29,9 +29,13 @@ module.exports = function(creep)
     {
         minerCreep = minerCreep[0];
     }
+    else
+    {
+        minerCreep = undefined;
+    }
 
     //if the minercreep is found
-    if (minerCreep)
+    if (!(minerCreep === undefined))
     {
         if (creepMemory.job == 'collect')
         {

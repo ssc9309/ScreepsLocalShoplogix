@@ -152,6 +152,13 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 				spawn.room.memory.upgradeLimit++;
 			}
 		}
+		else if (storageVar.store[RESOURCE_ENERGY] <= 0)
+		{
+			if (spawn.room.memory.upgradeLimit > 1)
+			{
+				spawn.room.memory.upgradeLimit = 1;
+			}
+		}
 		else
 		{
 			if (spawn.room.memory.upgradeLimit == 2)

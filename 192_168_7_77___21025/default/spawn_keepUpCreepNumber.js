@@ -13,6 +13,7 @@ module.exports = function(spawn)
 	var testCount = 0;
 	var rangeBuilderCount = 0;
 	var rangeMinerCount = 0;
+	var rangeTruckCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -71,6 +72,10 @@ module.exports = function(spawn)
 			{
 				rangeMinerCount++;
 			}
+			else if (creepRole == 'rangeTruck')
+			{
+				rangeTruckCount++;
+			}
 		}
 	}
 
@@ -121,6 +126,11 @@ module.exports = function(spawn)
 	{
 		bodyTypeToMake = 'rangeMiner';
 	}
+	else if (rangeTruckCount < spawnMemory.rangeTruckLimit)
+	{
+		bodyTypeToMake = 'rangeTruck';
+	}
+
 
 	//console.log(bodyTypeToMake);
 	if (bodyTypeToMake != '')
@@ -136,7 +146,7 @@ module.exports = function(spawn)
 			// _.clone() will take the value
 			prevBody = _.clone(body);
 
-			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer')
+			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer' || bodyTypeToMake == 'rangeTruck')
 			{	
 				body.push(MOVE);
 				body.push(CARRY);
