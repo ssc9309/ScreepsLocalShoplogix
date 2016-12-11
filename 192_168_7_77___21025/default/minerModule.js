@@ -19,6 +19,7 @@ module.exports = function(creep)
     
     creep.say('M'+workBodyCount);
 
+    //console.log(creep.memory.);
     //if no source id, assign myself one
     if (!creep.memory.sourceID)
     {
@@ -32,15 +33,17 @@ module.exports = function(creep)
             {
                 filter: function(object)
                 {
-                    return object.memory.role == 'miner' && object.memory.sourceID != sources[i].id;
+                    return object.memory.role == 'miner' && 
+                            object.memory.sourceID &&
+                            object.memory.sourceID == sources[i].id;
                 }
             });
 
-            console.log(minersInRoom);
+            //console.log(minersInRoom <= 0);
 
-            if (minersInRoom.length <= 0)
+            if (!minersInRoom || minersInRoom.length <= 0)
             {
-                creep.memory.sourcesID = sources[i].id;
+                creep.memory.sourceID = sources[i].id;
                 break;
             }
         }
@@ -48,6 +51,7 @@ module.exports = function(creep)
     else
     {
         var source = Game.getObjectById(creep.memory.sourceID);
+
 
         if (creep.carry.energy >= creep.carryCapacity)
         {

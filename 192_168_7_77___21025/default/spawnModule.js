@@ -1,6 +1,5 @@
 module.exports = function(spawnName, buildingMaxHealthVar)
 {
-	console.log("---SpawnModule Start---");
 	var startCPU = Game.cpu.getUsed();
 	var spawn = Game.spawns[spawnName];
 	

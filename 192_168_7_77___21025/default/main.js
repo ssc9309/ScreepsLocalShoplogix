@@ -29,7 +29,7 @@ module.exports.loop = function()
     
     
     //var buildingMaxHealth = 300000;
-    
+    console.log("---SpawnModule Start---");
     for (var spawnName in allSpawns)
     {
     	spawnModule(spawnName);
@@ -118,5 +118,5 @@ module.exports.loop = function()
     
     console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
-    console.log("");
+    console.log();
 }
