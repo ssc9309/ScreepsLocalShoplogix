@@ -86,14 +86,24 @@ module.exports.loop = function()
     console.log("CreepModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
     
-    /*
+    
     for (var name in Game.flags)
     {
         var flag = Game.flags[name];
+        
+        if (flag.color == COLOR_YELLOW)
+        {
+            if (!flag.memory.spawnRoom)
+            {
+                flag.memory.spawnRoom = 'WIYJ';
+            }
+        }
         //console.log(flag.name + " " + flag.color + " " + flag.pos.x + " " + flag.pos.y);
         //console.log(COLOR_WHITE);
     
         //flag memory to set which room to use, and how many workers to send?
     } 
-    */
+    
+    console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    startCPU = Game.cpu.getUsed();
 }

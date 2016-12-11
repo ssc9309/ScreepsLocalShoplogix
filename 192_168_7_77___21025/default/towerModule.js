@@ -11,7 +11,10 @@ module.exports =
         {
             var closestDamagedCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS,
             {
-                filter: (object) => object.hits < object.hitsMax
+                filter: function (object)
+                {
+                    return object.hits < object.hitsMax;
+                }
             });
             if (closestDamagedCreep)
             {
@@ -46,7 +49,6 @@ module.exports =
                     {
                         tower.repair(damagedStructure);
                     }
-                    
                 }
             }
         }

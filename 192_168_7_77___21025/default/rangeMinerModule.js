@@ -18,7 +18,7 @@ module.exports = function(creep)
         }
     }
     
-    creep.say('RB'+moveBodyCount);
+    creep.say('RM'+moveBodyCount);
 
     //if it doesn't have a flag. assign itself one
     if (!(creep.memory.flagName))
@@ -76,7 +76,8 @@ module.exports = function(creep)
     	{
     		var flagVar = Game.flags[creep.memory.flagName];
 	    	//if flag is in the different room
-	    	if (!(flagVar.room))
+	    	//console.log(creep.name + flagVar.room);
+	    	if (!(flagVar.room) || flagVar.room.name != creep.room.name)
 	    	{
 	    		creep.moveTo(flagVar);
 	    	}

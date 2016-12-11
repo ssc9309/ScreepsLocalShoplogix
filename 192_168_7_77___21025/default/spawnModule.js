@@ -30,11 +30,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     {
     	filter : function(object)
     	{
-    		if(object.memory.role == 'miner')
-    		{
-    			return true;
-    		}
-    		return false;
+    		return object.memory.role == 'miner';
     	}
     });
 
@@ -79,6 +75,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.linkX = -1;
     	spawn.room.memory.linkY = -1;
     	spawn.room.memory.rangeMinerLimit = 0;
+    	spawn.room.memory.rangeTruckLimit = 0;
     }
 
 	//if there is no construction sites, no building units
@@ -97,44 +94,45 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	}
 
 	//if there is no building to be repaired, or we have a tower, then no repair creeps
-	var repairBuildings = spawn.room.find(FIND_STRUCTURES, 
-	{
-	    filter : function(object)
-	    {
-	        if (object.hits >= object.hitsMax)
-	        {
-	            return false;
-	        }
-	        else if (object.hits >= spawn.room.memory.buildingMaxHealth)
-	        {
-	            return false;
-	        }
-	        else
-	        {
-	            return true;
-	        }
-	    }
-	});
-	
-	if (!(repairBuildings[0]) || towers)
+	if (towers)
 	{
 		spawn.room.memory.repairLimit = 0;
 	}
 	else
 	{
-		spawn.room.memory.repairLimit = 1;
+		var repairBuildings = spawn.room.find(FIND_STRUCTURES, 
+		{
+		    filter : function(object)
+		    {
+		        if (object.hits >= object.hitsMax)
+		        {
+		            return false;
+		        }
+		        else if (object.hits >= spawn.room.memory.buildingMaxHealth)
+		        {
+		            return false;
+		        }
+		        else
+		        {
+		            return true;
+		        }
+		    }
+		});
+
+		if (!(repairBuildings[0]))
+		{
+			spawn.room.memory.repairLimit = 0;
+		}
+		else
+		{
+			spawn.room.memory.repairLimit = 1;
+		}
 	}
 
-	var storageVar = spawn.room.storage;
 	//make transfer creep only if there is a storage and empty extentions
-	var storageBuildings = spawn.room.find(FIND_MY_STRUCTURES,
-	{
-	    filter: function(object)
-	    {
-	        return object.structureType == STRUCTURE_STORAGE && object.store[RESOURCE_ENERGY] > 0;
-	    }
-	});
-	if (storageBuildings[0])
+	var storageVar = spawn.room.storage;
+	
+	if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
 	{
 		spawn.room.memory.transferLimit = 1;
 	}
@@ -143,6 +141,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	    spawn.room.memory.transferLimit = 0;
 	}
 
+	//playing with upgrade limit 
 	if (storageVar)
 	{
 		if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2)
