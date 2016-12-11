@@ -34,7 +34,7 @@ module.exports.loop = function()
     {
     	spawnModule(spawnName);
     }
-    console.log("SpawnModule: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    console.log("---SpawnModuleTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
     startCPU = Game.cpu.getUsed();
      
     //activate the creeps
@@ -117,4 +117,5 @@ module.exports.loop = function()
     
     console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
+    console.log("");
 }
