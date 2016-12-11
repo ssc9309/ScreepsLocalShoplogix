@@ -167,6 +167,24 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 		}
 	}
 
+
+	//change the range miner & truck number depending on the range flags
+	spawn.room.memory.rangeMinerLimit = 0;
+	spawn.room.memory.rangeTruckLimit = 0;
+	for (var name in Game.flags)
+	{
+		var flagVar = Game.flags[name];
+		if (flagVar.color == COLOR_YELLOW)
+		{
+			if (flagVar.memory.spawnRoom == spawn.room.name)
+			{
+				spawn.room.memory.rangeMinerLimit++;
+				spawn.room.memory.rangeTruckLimit++;
+			}
+		}
+	}
+
+
 	//if it's not spawning, make sure spawn has all the creeps
 	var keepUpCreepNumber = require('spawn_keepUpCreepNumber');
 

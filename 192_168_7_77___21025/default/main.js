@@ -17,6 +17,17 @@ module.exports.loop = function()
     var allSpawns = Game.spawns;
     var startCPU = Game.cpu.getUsed();
     
+    //clean up memory
+    for(var name in Memory.creeps)
+    {
+        if (!Game.creeps[name])
+        {
+            delete Memory.creeps[name];
+        }
+    }
+    
+    
+    
     //var buildingMaxHealth = 300000;
     
     for (var spawnName in allSpawns)
@@ -95,7 +106,7 @@ module.exports.loop = function()
         {
             if (!flag.memory.spawnRoom)
             {
-                flag.memory.spawnRoom = 'WIYJ';
+                flag.memory.spawnRoom = 'WINJ';
             }
         }
         //console.log(flag.name + " " + flag.color + " " + flag.pos.x + " " + flag.pos.y);

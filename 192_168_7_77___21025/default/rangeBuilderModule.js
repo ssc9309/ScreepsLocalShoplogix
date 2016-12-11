@@ -8,7 +8,7 @@
  
 module.exports = function(creep)
 {
-    creep.say("R_B");
+    creep.say("RB");
     
     var testFlag = Game.flags.rangeBuild;
     var building = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
