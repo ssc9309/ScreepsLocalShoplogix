@@ -37,7 +37,8 @@ module.exports = function(creep)
     //if still no miner, then not enough rangeMiner
     if (!(creep.memory.minerName))
     {
-    	console.log('No range miner to assign to');
+        //meh. most likely a dead miner
+    	//console.log('No range miner to assign to');
     }
     else
     {

@@ -39,7 +39,6 @@ module.exports = function(creep)
 	    			//doesn't have a miner or miner is dead
 	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name)
 	    			{
-	    			    console.log(creep.name);
 	    				flagVar.memory.creepName = creep.name;
 	    				creep.memory.flagName = flagVar.name;
 	    				break;

@@ -14,6 +14,7 @@ module.exports = function(spawn)
 	var rangeBuilderCount = 0;
 	var rangeMinerCount = 0;
 	var rangeTruckCount = 0;
+	var healerCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -76,6 +77,10 @@ module.exports = function(spawn)
 			{
 				rangeTruckCount++;
 			}
+			else if (creepRole == 'healer')
+			{
+			    healerCount++;
+			}
 		}
 	}
 
@@ -129,6 +134,10 @@ module.exports = function(spawn)
 	else if (rangeTruckCount < spawnMemory.rangeTruckLimit)
 	{
 		bodyTypeToMake = 'rangeTruck';
+	}
+	else if (healerCount < spawnMemory.healerLimit)
+	{
+	    bodyTypeToMake = 'healer';
 	}
 
 
@@ -228,6 +237,12 @@ module.exports = function(spawn)
 					    break;
 					}
 				}
+			}
+			else if (bodyTypeToMake == 'healer')
+			{
+			    body.push(TOUGH);
+				body.push(HEAL);
+				body.push(MOVE);
 			}
 		}while(spawn.canCreateCreep(body) == OK);
 

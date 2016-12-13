@@ -83,6 +83,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	spawn.room.memory.linkY = -1;
     	spawn.room.memory.rangeMinerLimit = 0;
     	spawn.room.memory.rangeTruckLimit = 0;
+    	spawn.room.memory.healerLimit = 0;
     }
 
 	//if there is no construction sites, no building units

@@ -9,6 +9,7 @@ var repairModule = require('repairModule');
 var rangeBuilderModule = require('rangeBuilderModule');
 var rangeMinerModule = require('rangeMinerModule');
 var rangeTruckModule = require('rangeTruckModule');
+var healerModule = require('healerModule');
 
 var spawnModule = require('spawnModule');
 
@@ -89,6 +90,10 @@ module.exports.loop = function()
         else if (creepRole == 'rangeTruck')
         {
             rangeTruckModule(creep);
+        }
+        else if (creepRole == 'healer')
+        {
+            healerModule(creep);
         }
     }
     

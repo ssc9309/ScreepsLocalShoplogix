@@ -43,10 +43,13 @@ module.exports = function(creep)
     var moveResult = 0;
     var mySpawnInRoom = creep.room.find(FIND_MY_STRUCTURES,
     {
-        filter: { structureType: STRUCTURE_SPAWN }
+        filter: function (object)
+        { 
+            return object.structureType == STRUCTURE_SPAWN && !object.spawning;
+        }
     });
 
-    if (creep.ticksToLive < 100 && mySpawnInRoom)
+    if (creep.ticksToLive < 1400 && mySpawnInRoom.length > 0 && rallyFlag.room && rallyFlag.room.name == mySpawnInRoom[0].room.name)
     {
         //console.log(mySpawnInRoom[0].renewCreep(creep) );
         if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
