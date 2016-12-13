@@ -14,7 +14,7 @@ module.exports = function(creep)
 {
     creep.say('A');
     
-    var rallyFlag = Game.flags.Flag1;
+    var rallyFlag = Game.flags.rallyFlag;
     var cmdFlag = Game.flags.cmd;
     
     /*

@@ -14,7 +14,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     
     towers.forEach(towerModule.run);
 
-    console.log("towerModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    //console.log("towerModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
 
     var linkModule = require('linkModule');
@@ -29,7 +29,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	linkModule(links[i], spawn);
     }
 
-    console.log("linkModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    //console.log("linkModules: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
 
     //kill off the lower level miner if the max can be built
@@ -191,7 +191,7 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 		}
 	}
 
-	console.log("Limit Fixing: " + parseInt((Game.cpu.getUsed() - startCPU)));
+	//console.log("Limit Fixing: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
 
 
@@ -203,6 +203,6 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 		keepUpCreepNumber(spawn);
 	}
 
-	console.log("keepUpCreepNumberModule: " + parseInt((Game.cpu.getUsed() - startCPU)));
+	//console.log("keepUpCreepNumberModule: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
 }

@@ -106,6 +106,4 @@ module.exports = function(creep)
     		}
     	}
     }
-
-
 };

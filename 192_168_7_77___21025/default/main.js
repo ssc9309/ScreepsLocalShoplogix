@@ -26,17 +26,14 @@ module.exports.loop = function()
         }
     }
     
-    
-    
-    //var buildingMaxHealth = 300000;
-    console.log("---SpawnModule Start---");
+    //console.log("---SpawnModule Start---");
     for (var spawnName in allSpawns)
     {
     	spawnModule(spawnName);
     }
-    console.log("---SpawnModuleTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
+    //console.log("---SpawnModuleTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
     startCPU = Game.cpu.getUsed();
-    console.log("---CreepModulesStart---");
+    //console.log("---CreepModulesStart---");
      
     //activate the creeps
     for(var name in Game.creeps)
@@ -95,7 +92,7 @@ module.exports.loop = function()
         }
     }
     
-    console.log("---CreepModulesTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
+    //console.log("---CreepModulesTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
     startCPU = Game.cpu.getUsed();
     
     
@@ -110,13 +107,9 @@ module.exports.loop = function()
                 flag.memory.spawnRoom = 'WINJ';
             }
         }
-        //console.log(flag.name + " " + flag.color + " " + flag.pos.x + " " + flag.pos.y);
-        //console.log(COLOR_WHITE);
-    
-        //flag memory to set which room to use, and how many workers to send?
     } 
     
-    console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
+    //console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
-    console.log();
+    //console.log();
 }

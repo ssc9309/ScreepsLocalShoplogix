@@ -18,7 +18,7 @@ module.exports = function(creep)
         }
     }
     
-    creep.say('RM'+moveBodyCount);
+    creep.say('RM_'+creep.memory.flagName);
 
     //if it doesn't have a flag. assign itself one
     if (!(creep.memory.flagName))
@@ -35,9 +35,11 @@ module.exports = function(creep)
     			//for the same room
     			if (flagVar.memory.spawnRoom && flagVar.memory.spawnRoom == creep.memory.spawnRoom)
 	    		{
+	    		    
 	    			//doesn't have a miner or miner is dead
-	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]))
+	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name)
 	    			{
+	    			    console.log(creep.name);
 	    				flagVar.memory.creepName = creep.name;
 	    				creep.memory.flagName = flagVar.name;
 	    				break;
@@ -96,4 +98,19 @@ module.exports = function(creep)
 	    	}
     	}
     }
+    
+    //fuck you invaders
+    var hostileCreeps = creep.room.find(FIND_HOSTILE_CREEPS);
+    if (hostileCreeps.length > 0)
+    {
+        Game.flags.rallyFlag.setPosition(new RoomPosition(hostileCreeps[0].pos.x, hostileCreeps[0].pos.y, creep.room.name));
+    }
+    else
+    {
+        if (Game.flags.rallyFlag && Game.flags.rallyFlag.room && Game.flags.rallyFlag.room.name == creep.room.name)
+        {
+            Game.flags.rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
+        }
+    }
+    //console.log(hostileCreeps.length);
 };

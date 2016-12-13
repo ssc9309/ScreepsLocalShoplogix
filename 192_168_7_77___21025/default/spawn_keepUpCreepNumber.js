@@ -213,6 +213,20 @@ module.exports = function(spawn)
 				else
 				{
 					body.push(MOVE);
+					//fatigue. 
+					//pretty much one move per other for plain
+					//half per other for non move
+					//5 times per other for swamp
+					//if work, carry, move.
+					//fine for road
+					//every 2 ticks for plain
+					//some more for swamp
+					
+					//fuck. emtpy carry is not counted either...
+					if (body.length > 7)
+					{
+					    break;
+					}
 				}
 			}
 		}while(spawn.canCreateCreep(body) == OK);
