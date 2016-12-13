@@ -49,13 +49,30 @@ module.exports = function(creep)
         }
     });
 
-    if (creep.ticksToLive < 1400 && mySpawnInRoom.length > 0 && rallyFlag.room && rallyFlag.room.name == mySpawnInRoom[0].room.name)
+    if (!hostileCreep && creep.memory.renew && mySpawnInRoom.length > 0)
     {
-        //console.log(mySpawnInRoom[0].renewCreep(creep) );
-        if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
+        var result = mySpawnInRoom[0].renewCreep(creep);
+        
+        if (rallyFlag.room && rallyFlag.room.name == mySpawnInRoom[0].room.name)
         {
-            creep.moveTo(mySpawnInRoom[0]);
+            if(result == ERR_NOT_IN_RANGE)
+            {
+                creep.moveTo(mySpawnInRoom[0]);
+            }
+            else if (result == ERR_FULL)
+            {
+                creep.memory.renew = false;
+            }
         }
+    }
+    else if (creep.ticksToLive < 1400 && !creep.memory.renew)
+    {
+        creep.memory.renew = true;
+        //console.log(mySpawnInRoom[0].renewCreep(creep) );
+        //if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
+        //{
+            //creep.moveTo(mySpawnInRoom[0]);
+        //}
     }
     //priorities cmd order first
     else if(cmdFlag)

@@ -9,7 +9,7 @@
 
 module.exports = function(creep)
 {
-    creep.say('A');
+    creep.say('H');
     
     var rallyFlag = Game.flags.rallyFlag;
     
