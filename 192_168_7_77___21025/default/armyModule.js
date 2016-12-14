@@ -14,6 +14,18 @@ module.exports = function(creep)
 {
     creep.say('A');
     
+    if (creep.room.name == 'W3N7')
+    {
+        if (Game.time % 2 == 0)
+        {
+            creep.say('Hammer', true);
+        }
+        else
+        {
+            creep.say('DOWN!', true);
+        }
+    }
+    
     var rallyFlag = Game.flags.rallyFlag;
     var cmdFlag = Game.flags.cmd;
     
