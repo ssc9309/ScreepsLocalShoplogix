@@ -39,7 +39,14 @@ module.exports = function(creep)
     */
     
     
-    var hostileCreep = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+    var hostileCreep = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, 
+    {
+        filter: function(object)
+        {
+            //console.log(object.owner.username);
+            return object.owner.username != 'Source Keeper';
+        }
+    });
     var moveResult = 0;
     var mySpawnInRoom = creep.room.find(FIND_MY_STRUCTURES,
     {

@@ -10,6 +10,7 @@ var rangeBuilderModule = require('rangeBuilderModule');
 var rangeMinerModule = require('rangeMinerModule');
 var rangeTruckModule = require('rangeTruckModule');
 var healerModule = require('healerModule');
+var tankModule = require('tankModule');
 
 var spawnModule = require('spawnModule');
 
@@ -94,6 +95,16 @@ module.exports.loop = function()
         else if (creepRole == 'healer')
         {
             healerModule(creep);
+        }
+        else if (creepRole == 'tank')
+        {
+            //tankModule(creep);
+            armyModule(creep);
+        }
+        else if (creepRole == 'fastCat')
+        {
+            //tankModule(creep);
+            armyModule(creep);
         }
     }
     

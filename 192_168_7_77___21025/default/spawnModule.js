@@ -152,7 +152,11 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 	//playing with upgrade limit 
 	if (storageVar)
 	{
-		if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2)
+	    if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity * 0.75)
+	    {
+	        spawn.room.memory.upgradeLimit = 5;
+	    }
+		else if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2)
 		{
 			if (spawn.room.memory.upgradeLimit == 1)
 			{

@@ -76,6 +76,7 @@ module.exports = function(creep)
     	else
     	{
     		var flagVar = Game.flags[creep.memory.flagName];
+
 	    	//if flag is in the different room
 	    	//console.log(creep.name + flagVar.room);
 	    	if (!(flagVar.room) || flagVar.room.name != creep.room.name)

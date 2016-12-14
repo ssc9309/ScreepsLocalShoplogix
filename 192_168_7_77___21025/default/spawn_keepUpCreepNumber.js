@@ -15,6 +15,8 @@ module.exports = function(spawn)
 	var rangeMinerCount = 0;
 	var rangeTruckCount = 0;
 	var healerCount = 0;
+	var tankCount = 0;
+	var fastCatCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -81,6 +83,14 @@ module.exports = function(spawn)
 			{
 			    healerCount++;
 			}
+			else if (creepRole == 'tank')
+			{
+			    tankCount++;
+			}
+			else if (creepRole == 'fastCat')
+			{
+			    fastCatCount++;
+			}
 		}
 	}
 
@@ -115,6 +125,10 @@ module.exports = function(spawn)
 	{
 		bodyTypeToMake = 'repair';
 	}
+	else if (fastCatCount < spawnMemory.fastCatLimit)
+	{
+	    bodyTypeToMake = 'fastCat';
+	}
 	else if (armyCount < spawnMemory.armyLimit)
 	{
 		bodyTypeToMake = 'army';
@@ -138,6 +152,10 @@ module.exports = function(spawn)
 	else if (healerCount < spawnMemory.healerLimit)
 	{
 	    bodyTypeToMake = 'healer';
+	}
+	else if (tankCount < spawnMemory.tankLimit)
+	{
+	    bodyTypeToMake = 'tank';
 	}
 
 
@@ -243,6 +261,30 @@ module.exports = function(spawn)
 			    body.push(TOUGH);
 				body.push(HEAL);
 				body.push(MOVE);
+			}
+			else if (bodyTypeToMake == 'tank')
+			{
+			    if (body.length <= 0)
+			    {
+			        body.push(RANGED_ATTACK);
+			        body.push(TOUGH);
+			        body.push(MOVE);
+			        body.push(MOVE);
+			    }
+			    else
+			    {
+			        body.push(TOUGH);
+			        body.push(MOVE);
+			    }
+			}
+			else if (bodyTypeToMake == 'fastCat')
+			{
+			    body.push(RANGED_ATTACK);
+			    body.push(MOVE);
+			    body.push(MOVE);
+			    body.push(MOVE);
+			    body.push(MOVE);
+			    body.push(MOVE);
 			}
 		}while(spawn.canCreateCreep(body) == OK);
 

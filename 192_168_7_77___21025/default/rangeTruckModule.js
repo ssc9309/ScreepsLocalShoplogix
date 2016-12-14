@@ -9,9 +9,10 @@
 
 module.exports = function(creep)
 {
-	creep.say('RT' + creep.body.length/2);
+	//creep.say('RT' + creep.body.length/2);
 
     var creepMemory = creep.memory;
+    creep.say('RT_' + creepMemory.flagName);
 
     //if i don't have a minerCreep, assign myself to one
     if (!(creep.memory.minerName))
@@ -27,6 +28,7 @@ module.exports = function(creep)
     				{
     					creepVar.memory.truckName = creep.name;
     					creep.memory.minerName = creepVar.name;
+    					creep.memory.flagName = creepVar.memory.flagName;
     					break;
     				}
     			}
