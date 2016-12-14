@@ -12,7 +12,8 @@ module.exports = function (creep)
     {
         filter: function(object)
         {
-            return object.energy >= creep.carryCapacity && object.room.name == creep.room.name;
+            return (object.energy >= creep.carryCapacity && object.room.name == creep.room.name) ||
+                    (Math.abs(object.pos.x - creep.pos.x) <= 1 && Math.abs(object.pos.y - creep.pos.y) <= 1);
         }
     });
 

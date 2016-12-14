@@ -40,8 +40,8 @@ module.exports =
                     {
                         filter: function(object)
                         {
-                            return (object.structureType == STRUCTURE_WALL && object.hits < object.hitsMax && object.hits < tower.room.memory.buildingMaxHealth) ||
-                                    (object.structureType != STRUCTURE_WALL && object.hits < object.hitsMax);
+                            return object.structureType != STRUCTURE_RAMPART && ((object.structureType == STRUCTURE_WALL && object.hits < object.hitsMax && object.hits < tower.room.memory.buildingMaxHealth) ||
+                                    (object.structureType != STRUCTURE_WALL && object.hits < object.hitsMax));
                         }
                     });
                     if (damagedStructure)

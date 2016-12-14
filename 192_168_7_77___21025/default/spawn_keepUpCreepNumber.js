@@ -173,7 +173,7 @@ module.exports = function(spawn)
 			// _.clone() will take the value
 			prevBody = _.clone(body);
 
-			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer' || bodyTypeToMake == 'rangeTruck')
+			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer')
 			{	
 				body.push(MOVE);
 				body.push(CARRY);
@@ -285,6 +285,21 @@ module.exports = function(spawn)
 			    body.push(MOVE);
 			    body.push(MOVE);
 			    body.push(MOVE);
+			}
+			else if (bodyTypeToMake == 'rangeTruck')
+			{
+			    if (body.length <= 0)
+			    {
+			        body.push(WORK);
+			        body.push(CARRY);
+			        body.push(MOVE);
+			        body.push(MOVE);
+			    }
+			    else
+			    {
+			        body.push(CARRY);
+			        body.push(MOVE);
+			    }
 			}
 		}while(spawn.canCreateCreep(body) == OK);
 

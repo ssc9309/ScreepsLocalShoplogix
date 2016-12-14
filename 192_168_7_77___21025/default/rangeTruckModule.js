@@ -44,69 +44,92 @@ module.exports = function(creep)
     }
     else
     {
-    	if (creep.carry.energy < creep.carryCapacity)
-    	{
-    		var minerCreep = Game.creeps[creep.memory.minerName];
-    		//if your lover died... FIND A GODDAMN NEW ONE
-    		if (!(minerCreep))
-    		{
-    			creepMemory.minerName = undefined;
-    		}
-    		//if in the same room, just pick up the dropped energy
-    		else if (minerCreep.room.name == creep.room.name)
-    		{
-    			var droppedEnergyTarget = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY,
-                {
-                    filter: function(object)
+        if (creepMemory.job == 'collect')
+        {
+        	if (creep.carry.energy < creep.carryCapacity)
+        	{
+        		var minerCreep = Game.creeps[creep.memory.minerName];
+        		//if your lover died... FIND A GODDAMN NEW ONE
+        		if (!(minerCreep))
+        		{
+        			creepMemory.minerName = undefined;
+        		}
+        		//if in the same room, just pick up the dropped energy
+        		else if (minerCreep.room.name == creep.room.name)
+        		{
+        			var droppedEnergyTarget = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY,
                     {
-                        return object.energy >= creep.carryCapacity && object.room.name == creep.room.name;
-                    }
-                });
-
-                if (droppedEnergyTarget)
-                {
-                    if (creep.pickup(droppedEnergyTarget) == ERR_NOT_IN_RANGE)
+                        filter: function(object)
+                        {
+                            return (object.energy >= creep.carryCapacity && object.room.name == creep.room.name) ||
+                                    (Math.abs(object.pos.x - creep.pos.x) <= 1 && Math.abs(object.pos.y - creep.pos.y) <= 1);
+                        }
+                    });
+    
+                    if (droppedEnergyTarget)
                     {
-                        creep.moveTo(droppedEnergyTarget);
+                        if (creep.pickup(droppedEnergyTarget) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(droppedEnergyTarget);
+                        }
                     }
-                }
-                else
-                {
-                	if (minerCreep.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-		    		{
-		    			creep.moveTo(minerCreep);
-		    		}
-                }
-    		}
-    		else
-    		{
-    			creep.moveTo(minerCreep);
-    		}
-    	}
+                    else
+                    {
+                    	if (minerCreep.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+    		    		{
+    		    			creep.moveTo(minerCreep);
+    		    		}
+                    }
+        		}
+        		else
+        		{
+        			creep.moveTo(minerCreep);
+        		}
+        	}
+        	else
+        	{
+        	    creepMemory.job = 'distribute';
+        	}
+        }
     	else
     	{
-    		//if i don't have a storage id, assignmyself one
-    		if (!(creep.memory.storageID))
-    		{
-    			for (var name in Game.structures)
-    			{
-    				var structureVar = Game.structures[name];
-    				if (structureVar.structureType == STRUCTURE_STORAGE && structureVar.room.name == creepMemory.spawnRoom)
-    				{
-    					creep.memory.storageID = structureVar.id;
-    					break;
-    				}
-    			}
-    		}
-    		else
-    		{
-    			var storageVar = Game.getObjectById(creepMemory.storageID);
-
-    			if (creep.transfer(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-    			{
-    				creep.moveTo(storageVar);
-    			}
-    		}
+    	    if (creep.carry.energy > 0)
+    	    {
+        		//if i don't have a storage id, assignmyself one
+        		if (!(creep.memory.storageID))
+        		{
+        			for (var name in Game.structures)
+        			{
+        				var structureVar = Game.structures[name];
+        				if (structureVar.structureType == STRUCTURE_STORAGE && structureVar.room.name == creepMemory.spawnRoom)
+        				{
+        					creep.memory.storageID = structureVar.id;
+        					break;
+        				}
+        			}
+        		}
+        		else
+        		{
+        		    var lookStructures = creep.room.lookForAt(LOOK_STRUCTURES, creep.pos);
+        		    if (lookStructures.length == 1 && lookStructures[0].structureType == STRUCTURE_ROAD && lookStructures[0].hits < lookStructures[0].hitsMax)
+        		    {
+        		        creep.repair(lookStructures[0]);
+        		    }
+        		    else
+        		    {
+        		        var storageVar = Game.getObjectById(creepMemory.storageID);
+    
+            			if (creep.transfer(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+            			{
+            				creep.moveTo(storageVar);
+            			}
+        		    }
+        		}
+    	    }
+    	    else
+    	    {
+    	        creepMemory.job = 'collect';
+    	    }
     	}
     }
 };
