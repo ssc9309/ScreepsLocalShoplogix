@@ -214,7 +214,11 @@ module.exports = function(spawn)
 			}
 			else if (bodyTypeToMake == 'control')
 			{
-				if(body.length == 0)
+			    if (body.length > 6)
+				{
+				    break;
+				}
+				else if(body.length == 0)
 				{
 					body.push(CLAIM);
 					body.push(MOVE);
@@ -223,6 +227,7 @@ module.exports = function(spawn)
 				{
 					body.push(MOVE);
 				}
+				
 			}
 			else if (bodyTypeToMake == 'rangeMiner')
 			{
