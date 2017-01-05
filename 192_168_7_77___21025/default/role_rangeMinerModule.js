@@ -56,9 +56,17 @@ module.exports = function(creep)
     //if the creep has a flag
     else
     {
+        var flagVar = Game.flags[creep.memory.flagName];
     	//if i know the source id, then go to it and mine
     	if (creep.memory.sourceID)
     	{
+    	    if (flagVar.room.controller.owner && !flagVar.room.controller.my)
+    	    {
+    	        Game.flags.safeModeCheckFlag.setPosition(new RoomPosition(flagVar.room.controller.pos.x, flagVar.room.controller.pos.y, flagVar.room.name));
+    	        Game.rooms[creep.memory.spawnRoom].memory.safeModeCheckerLimit = 1;
+    	        flagVar.remove();
+    	    }
+    	    
     		var sourceVar = Game.getObjectById(creep.memory.sourceID);
 
 
@@ -75,8 +83,6 @@ module.exports = function(creep)
     	//if i don't know the source id, assign myself one
     	else
     	{
-    		var flagVar = Game.flags[creep.memory.flagName];
-
 	    	//if flag is in the different room
 	    	//console.log(creep.name + flagVar.room);
 	    	if (!(flagVar.room) || flagVar.room.name != creep.room.name)

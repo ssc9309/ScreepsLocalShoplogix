@@ -31,6 +31,11 @@ module.exports = function(creep)
                     creep.moveTo(creep.room.controller);
                 }
             }
+            else
+            {
+                controlFlag.remove();
+                Game.rooms[creep.memory.spawnRoom].memory.controlLimit = 0; 
+            }
         }
     }
     

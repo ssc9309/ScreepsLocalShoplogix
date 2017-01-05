@@ -50,13 +50,23 @@ module.exports = function(creep)
     }
     */
     
+    //console.log(creep.room.controller.safeMode);
+    
+    if (creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
+    {
+        if (rallyFlag)
+        {
+            rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
+        }
+    }
+    
     
     var hostileCreep = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, 
     {
         filter: function(object)
         {
             //console.log(object.owner.username);
-            return object.owner.username != 'Source Keeper';
+            return object.owner.username != 'Source Keeper' && !object.room.controller.safeMode;
         }
     });
     var moveResult = 0;
@@ -67,24 +77,24 @@ module.exports = function(creep)
             return object.structureType == STRUCTURE_SPAWN && !object.spawning;
         }
     });
+    
+    
 
-    if (!hostileCreep && creep.memory.renew && mySpawnInRoom.length > 0)
+    if (!hostileCreep && creep.memory.renew && mySpawnInRoom.length > 0 && rallyFlag.room && rallyFlag.room.name == creep.room.name)
     {
         var result = mySpawnInRoom[0].renewCreep(creep);
         
-        if (rallyFlag.room && rallyFlag.room.name == mySpawnInRoom[0].room.name)
+        if(result == ERR_NOT_IN_RANGE)
         {
-            if(result == ERR_NOT_IN_RANGE)
-            {
-                creep.moveTo(mySpawnInRoom[0]);
-            }
-            else if (result == ERR_FULL)
-            {
-                creep.memory.renew = false;
-            }
+            creep.moveTo(mySpawnInRoom[0]);
         }
+        else if (result == ERR_FULL || creep.ticksToLive > 1450)
+        {
+            creep.memory.renew = false;
+        }
+        
     }
-    else if (creep.ticksToLive < 1400 && !creep.memory.renew)
+    else if (creep.ticksToLive < 1000 && !creep.memory.renew)
     {
         creep.memory.renew = true;
         //console.log(mySpawnInRoom[0].renewCreep(creep) );
@@ -94,10 +104,16 @@ module.exports = function(creep)
         //}
     }
     //priorities cmd order first
-    else if(cmdFlag)
+    else if(cmdFlag && cmdFlag.room && cmdFlag.room.name == creep.room.name)
     {
         //var cmdPos = creep.pos.look(cmdFlag);
         var cmdPos = cmdFlag.pos.look();
+
+        //if it's just flag and terrain, then remove flag
+        if (cmdPos.length <= 2)
+        {
+            cmdFlag.remove();
+        }
         
         for(var x in cmdPos)
         {
@@ -179,7 +195,13 @@ module.exports = function(creep)
     else
     {
         //if there are no creeps, start destroying the spawns and buildings
-        var hostileSpawn = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);
+        var hostileSpawn = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS, 
+        {
+            filter: function(object)
+            {
+                return !object.room.controller.safeMode;
+            }
+        });
         //creep.say('no creep')
         
         if (hostileSpawn)
@@ -190,9 +212,21 @@ module.exports = function(creep)
         }
         else
         {
-            var hostileStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+            //if i destroyed the spawn, then let's go back
+            if (creep.room.controller.owner && !creep.room.controller.my)
+            {
+                rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
+            }
+            
+            var hostileStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES,
+            {
+                filter: function(object)
+                {
+                    return !object.room.controller.safeMode && object.structureType != STRUCTURE_CONTROLLER;
+                }
+            });
             //console.log(hostileStructure.structureType);
-            if (hostileStructure && hostileStructure.structureType != 'controller')
+            if (hostileStructure)
             {
                 creep.moveTo(hostileStructure);
                 creep.attack(hostileStructure);

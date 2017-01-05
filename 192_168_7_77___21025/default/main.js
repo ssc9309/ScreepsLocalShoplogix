@@ -1,16 +1,17 @@
-var transferModule = require('transferModule');
-var minerModule = require('minerModule');
-var truckModule = require('truckModule');
-var buildModule = require('buildModule');
-var upgradeModule = require('upgradeModule');
-var armyModule = require('armyModule');
-var controlModule = require('controlModule');
-var repairModule = require('repairModule');
-var rangeBuilderModule = require('rangeBuilderModule');
-var rangeMinerModule = require('rangeMinerModule');
-var rangeTruckModule = require('rangeTruckModule');
-var healerModule = require('healerModule');
-var tankModule = require('tankModule');
+var transferModule = require('role_transferModule');
+var minerModule = require('role_minerModule');
+var truckModule = require('role_truckModule');
+var buildModule = require('role_buildModule');
+var upgradeModule = require('role_upgradeModule');
+var armyModule = require('role_armyModule');
+var controlModule = require('role_controlModule');
+var repairModule = require('role_repairModule');
+var rangeBuilderModule = require('role_rangeBuilderModule');
+var rangeMinerModule = require('role_rangeMinerModule');
+var rangeTruckModule = require('role_rangeTruckModule');
+var healerModule = require('role_healerModule');
+var tankModule = require('role_tankModule');
+var safeModeCheckerModule = require('safeModeCheckerModule');
 
 var spawnModule = require('spawnModule');
 
@@ -105,6 +106,10 @@ module.exports.loop = function()
         {
             //tankModule(creep);
             armyModule(creep);
+        }
+        else if (creepRole == 'safeModeChecker')
+        {
+            safeModeCheckerModule(creep);
         }
     }
     

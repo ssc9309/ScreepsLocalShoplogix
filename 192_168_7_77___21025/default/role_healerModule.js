@@ -13,6 +13,16 @@ module.exports = function(creep)
     
     var rallyFlag = Game.flags.rallyFlag;
     
+    if (creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
+    {
+        if (rallyFlag)
+        {
+            rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
+        }
+    }
+    
+    
+    
     var damagedCreep = creep.pos.findClosestByRange(FIND_MY_CREEPS,
     {
         filter: function(object)
@@ -26,15 +36,30 @@ module.exports = function(creep)
         filter: { structureType: STRUCTURE_SPAWN }
     });
 
-    if (creep.ticksToLive < 1400 && mySpawnInRoom.length > 0 && rallyFlag.room && rallyFlag.room.name == mySpawnInRoom[0].room.name)
+    
+    if (creep.memory.renew && mySpawnInRoom.length > 0 && rallyFlag.room && rallyFlag.room.name == creep.room.name && !damagedCreep)
     {
-        //console.log(mySpawnInRoom[0].renewCreep(creep) );
-        if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
+        var result = mySpawnInRoom[0].renewCreep(creep);
+        
+        if(result == ERR_NOT_IN_RANGE)
         {
             creep.moveTo(mySpawnInRoom[0]);
         }
+        else if (result == ERR_FULL || creep.ticksToLive > 1450)
+        {
+            creep.memory.renew = false;
+        }
+        
     }
-    
+    else if (creep.ticksToLive < 1000 && !creep.memory.renew)
+    {
+        creep.memory.renew = true;
+        //console.log(mySpawnInRoom[0].renewCreep(creep) );
+        //if(mySpawnInRoom[0].renewCreep(creep) == ERR_NOT_IN_RANGE)
+        //{
+            //creep.moveTo(mySpawnInRoom[0]);
+        //}
+    }
     else if (damagedCreep)
     {
         if (creep.heal(damagedCreep) == ERR_NOT_IN_RANGE)

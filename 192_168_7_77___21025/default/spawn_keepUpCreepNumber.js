@@ -17,6 +17,7 @@ module.exports = function(spawn)
 	var healerCount = 0;
 	var tankCount = 0;
 	var fastCatCount = 0;
+	var safeModeCheckerCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -91,6 +92,10 @@ module.exports = function(spawn)
 			{
 			    fastCatCount++;
 			}
+			else if (creepRole == 'safeModeChecker')
+			{
+			    safeModeCheckerCount++;
+			}
 		}
 	}
 
@@ -156,6 +161,10 @@ module.exports = function(spawn)
 	else if (tankCount < spawnMemory.tankLimit)
 	{
 	    bodyTypeToMake = 'tank';
+	}
+	else if (safeModeCheckerCount < spawnMemory.safeModeCheckerLimit && Game.time >= spawn.room.memory.safeModeEndsAt)
+	{
+	    bodyTypeToMake = 'safeModeChecker';
 	}
 
 
@@ -266,6 +275,7 @@ module.exports = function(spawn)
 			    body.push(TOUGH);
 				body.push(HEAL);
 				body.push(MOVE);
+				body.push(MOVE);
 			}
 			else if (bodyTypeToMake == 'tank')
 			{
@@ -305,6 +315,14 @@ module.exports = function(spawn)
 			        body.push(CARRY);
 			        body.push(MOVE);
 			    }
+			}
+			else if (bodyTypeToMake == 'safeModeChecker')
+			{
+		        body.push(MOVE);
+		        if (body.length > 1)
+		        {
+		            break;
+		        }
 			}
 		}while(spawn.canCreateCreep(body) == OK);
 
