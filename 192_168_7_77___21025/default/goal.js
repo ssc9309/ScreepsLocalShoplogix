@@ -2,14 +2,9 @@
 
 /*
 
-Ranged mining
-a spawn will facilitate how many ranged miners to have.
-they will leave the room and find a mine
-and assign itself to it.
-trucks will chase the miners to gather the energy
-spawn needs to know how to keep track of creeps outside of its room
+auto assign the rangeBuilderLimit depending on the room distance
 
-
+deploy army if an enemy shows up? (then what about invaders...)
 
 
 

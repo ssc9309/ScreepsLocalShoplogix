@@ -62,140 +62,6 @@ module.exports = function(spawnName, buildingMaxHealthVar)
     	}
     }
 
-	//Set Default values
-	//Reading the room creep limits from the memory
-	if (spawn.room.memory.hello === undefined)
-    {
-    	spawn.room.memory.hello = "World";
-    	spawn.room.memory.transferLimit = 1;
-    	spawn.room.memory.truckLimit = 2;
-    	spawn.room.memory.minerLimit = 2;
-    	spawn.room.memory.buildLimit = 1;
-    	spawn.room.memory.upgradeLimit = 1;
-    	spawn.room.memory.armyLimit = 0;
-    	spawn.room.memory.controlLimit = 0;
-    	spawn.room.memory.repairLimit = 0;
-    	spawn.room.memory.testLimit = 0;
-    	spawn.room.memory.buildingMaxHealth = 5000;
-    	spawn.room.memory.wallRepairLimit = 0;
-    	spawn.room.memory.rangeBuilderLimit = 0;
-    	spawn.room.memory.linkX = -1;
-    	spawn.room.memory.linkY = -1;
-    	spawn.room.memory.rangeMinerLimit = 0;
-    	spawn.room.memory.rangeTruckLimit = 0;
-    	spawn.room.memory.healerLimit = 0;
-    }
-
-	//if there is no construction sites, no building units
-	//console.log(Game.spawns[spawn].room);
-	var constSites = spawn.room.find(FIND_CONSTRUCTION_SITES);
-	if (!(constSites[0]))
-	{
-		spawn.room.memory.buildLimit = 0;
-	}
-	else
-	{
-		if (spawn.room.memory.buildLimit <= 0)
-		{
-		    spawn.room.memory.buildLimit++;
-		}
-	}
-
-	//if there is no building to be repaired, or we have a tower, then no repair creeps
-	if (towers)
-	{
-		spawn.room.memory.repairLimit = 0;
-	}
-	else
-	{
-		var repairBuildings = spawn.room.find(FIND_STRUCTURES, 
-		{
-		    filter : function(object)
-		    {
-		        if (object.hits >= object.hitsMax)
-		        {
-		            return false;
-		        }
-		        else if (object.hits >= spawn.room.memory.buildingMaxHealth)
-		        {
-		            return false;
-		        }
-		        else
-		        {
-		            return true;
-		        }
-		    }
-		});
-
-		if (!(repairBuildings[0]))
-		{
-			spawn.room.memory.repairLimit = 0;
-		}
-		else
-		{
-			spawn.room.memory.repairLimit = 1;
-		}
-	}
-
-	//make transfer creep only if there is a storage and empty extentions
-	var storageVar = spawn.room.storage;
-	
-	if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
-	{
-		spawn.room.memory.transferLimit = 1;
-	}
-	else
-	{
-	    spawn.room.memory.transferLimit = 0;
-	}
-
-	//playing with upgrade limit 
-	if (storageVar)
-	{
-	    if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity * 0.75)
-	    {
-	        spawn.room.memory.upgradeLimit = 5;
-	    }
-		else if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2)
-		{
-			if (spawn.room.memory.upgradeLimit == 1)
-			{
-				spawn.room.memory.upgradeLimit++;
-			}
-		}
-		else if (storageVar.store[RESOURCE_ENERGY] <= 0)
-		{
-			if (spawn.room.memory.upgradeLimit > 1)
-			{
-				spawn.room.memory.upgradeLimit = 1;
-			}
-		}
-		else
-		{
-			if (spawn.room.memory.upgradeLimit == 2)
-			{
-				spawn.room.memory.upgradeLimit--;
-			}
-		}
-	}
-
-
-	//change the range miner & truck number depending on the range flags
-	spawn.room.memory.rangeMinerLimit = 0;
-	spawn.room.memory.rangeTruckLimit = 0;
-	for (var name in Game.flags)
-	{
-		var flagVar = Game.flags[name];
-		if (flagVar.color == COLOR_YELLOW)
-		{
-			if (flagVar.memory.spawnRoom == spawn.room.name)
-			{
-				spawn.room.memory.rangeMinerLimit++;
-				spawn.room.memory.rangeTruckLimit++;
-			}
-		}
-	}
-
 	//console.log("Limit Fixing: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
 
@@ -210,4 +76,20 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 
 	//console.log("keepUpCreepNumberModule: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
+    
+    
+    //call range builder
+    if (spawn.room.controller.level <= 4)
+    {
+        var constSites = spawn.room.find(FIND_CONSTRUCTION_SITES);
+
+        if (constSites.length > 0)
+        {
+            Game.flags.rangeBuild.setPosition(spawn.room.controller.pos);
+        }
+    }
+    
+    
+    
+    
 }

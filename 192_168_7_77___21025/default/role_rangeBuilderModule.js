@@ -10,15 +10,13 @@ module.exports = function(creep)
 {
     creep.say("RB");
     
-    var testFlag = Game.flags.rangeBuild;
-    var building = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+    var rangeBuildFlag = Game.flags.rangeBuild;
     
-
     //console.log(creep.carry.energy);
 
-    if (testFlag)
+    if (rangeBuildFlag)
     {
-        if (testFlag.pos.roomName != creep.room.name)
+        if (rangeBuildFlag.pos.roomName != creep.room.name)
         {
             if (creep.carry.energy <= 0)
             {
@@ -32,11 +30,13 @@ module.exports = function(creep)
             }
             else
             {
-                creep.moveTo(testFlag);
+                creep.moveTo(rangeBuildFlag);
             }
         }
         else
         {
+            var building = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+            
             if (building)
             {
                 if(Memory.creeps[creep.name].job == 'mine')
@@ -96,7 +96,8 @@ module.exports = function(creep)
             }     
             else
             {
-                creep.moveTo(testFlag);
+                rangeBuildFlag.remove();
+                Game.rooms[creep.memory.spawnRoom].memory.rangeBuilderLimit = 0;
             }
         }
     }

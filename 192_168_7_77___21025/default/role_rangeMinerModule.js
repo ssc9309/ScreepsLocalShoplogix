@@ -60,7 +60,7 @@ module.exports = function(creep)
     	//if i know the source id, then go to it and mine
     	if (creep.memory.sourceID)
     	{
-    	    if (flagVar.room.controller.owner && !flagVar.room.controller.my)
+    	    if (flagVar.room && flagVar.room.controller.owner && !flagVar.room.controller.my)
     	    {
     	        Game.flags.safeModeCheckFlag.setPosition(new RoomPosition(flagVar.room.controller.pos.x, flagVar.room.controller.pos.y, flagVar.room.name));
     	        Game.rooms[creep.memory.spawnRoom].memory.safeModeCheckerLimit = 1;

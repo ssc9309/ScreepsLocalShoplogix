@@ -1,5 +1,8 @@
+
+
 module.exports = function(spawn)
 {
+    var creepLimitModule = require('spawn_calculateCreepLimit');
 	//var creepsOfSpawn = [];
 
 	var transferCount = 0;
@@ -18,6 +21,7 @@ module.exports = function(spawn)
 	var tankCount = 0;
 	var fastCatCount = 0;
 	var safeModeCheckerCount = 0;
+	var mineralHarvesterCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -96,10 +100,16 @@ module.exports = function(spawn)
 			{
 			    safeModeCheckerCount++;
 			}
+			else if (creepRole == 'mineralHarvester')
+			{
+			    mineralHarvesterCount++;
+			}
 		}
 	}
 
 	//console.log(spawn.room.memory.truckLimit);
+	
+	creepLimitModule(spawn);
 
 	var spawnMemory = spawn.room.memory;
 	//console.log(transferCount);
@@ -162,9 +172,13 @@ module.exports = function(spawn)
 	{
 	    bodyTypeToMake = 'tank';
 	}
-	else if (safeModeCheckerCount < spawnMemory.safeModeCheckerLimit && Game.time >= spawn.room.memory.safeModeEndsAt)
+	else if (safeModeCheckerCount < spawnMemory.safeModeCheckerLimit && Game.time >= spawnMemory.safeModeEndsAt)
 	{
 	    bodyTypeToMake = 'safeModeChecker';
+	}
+	else if (mineralHarvesterCount < spawnMemory.mineralHarvesterLimit)
+	{
+		bodyTypeToMake = 'mineralHarvester';
 	}
 
 
@@ -209,7 +223,8 @@ module.exports = function(spawn)
 			else if (	bodyTypeToMake == 'build' || 
 						bodyTypeToMake == 'upgrade' || 
 						bodyTypeToMake == 'repair' ||
-						bodyTypeToMake == 'rangeBuilder')
+						bodyTypeToMake == 'rangeBuilder' ||
+						bodyTypeToMake == 'mineralHarvester')
 			{
 				body.push(MOVE);
 				body.push(CARRY);

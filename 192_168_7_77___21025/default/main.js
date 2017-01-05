@@ -11,7 +11,8 @@ var rangeMinerModule = require('role_rangeMinerModule');
 var rangeTruckModule = require('role_rangeTruckModule');
 var healerModule = require('role_healerModule');
 var tankModule = require('role_tankModule');
-var safeModeCheckerModule = require('safeModeCheckerModule');
+var safeModeCheckerModule = require('role_safeModeCheckerModule');
+var mineralHarvesterModule = require('role_mineralHarvesterModule');
 
 var spawnModule = require('spawnModule');
 
@@ -111,6 +112,10 @@ module.exports.loop = function()
         {
             safeModeCheckerModule(creep);
         }
+        else if (creepRole == 'mineralHarvester')
+        {
+            mineralHarvesterModule(creep);
+        }
     }
     
     //console.log("---CreepModulesTotal: " + parseInt((Game.cpu.getUsed() - startCPU)) + "---");
@@ -127,6 +132,11 @@ module.exports.loop = function()
             {
                 flag.memory.spawnRoom = 'WINJ';
             }
+        }
+        else if (name == 'rangeBuild')
+        {
+            //console.log("Hello");
+
         }
     } 
     
