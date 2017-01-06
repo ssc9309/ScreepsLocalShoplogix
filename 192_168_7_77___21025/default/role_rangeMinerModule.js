@@ -37,7 +37,7 @@ module.exports = function(creep)
 	    		{
 	    		    
 	    			//doesn't have a miner or miner is dead
-	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name)
+	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name || (Game.creeps[flagVar.memory.creepName] && Game.creeps[flagVar.memory.creepName].memory.role != 'rangeMiner'))
 	    			{
 	    				flagVar.memory.creepName = creep.name;
 	    				creep.memory.flagName = flagVar.name;
@@ -62,14 +62,17 @@ module.exports = function(creep)
     	{
     	    if (flagVar.room && flagVar.room.controller.owner && !flagVar.room.controller.my)
     	    {
-    	        Game.flags.safeModeCheckFlag.setPosition(new RoomPosition(flagVar.room.controller.pos.x, flagVar.room.controller.pos.y, flagVar.room.name));
-    	        Game.rooms[creep.memory.spawnRoom].memory.safeModeCheckerLimit = 1;
-    	        flagVar.remove();
+                //console.log(flagVar.room.controller.owner.username);
+                //hank, here too. i can't make a new flag...
+    	        //Game.flags.safeModeCheckFlag.setPosition(new RoomPosition(flagVar.room.controller.pos.x, flagVar.room.controller.pos.y, flagVar.room.name));
+    	        //Game.rooms[creep.memory.spawnRoom].memory.safeModeCheckerLimit = 1;
+    	        //flagVar.remove();
     	    }
     	    
     		var sourceVar = Game.getObjectById(creep.memory.sourceID);
 
-
+            //hahahah. you cna't mine in someone else's room
+            //console.log(creep.harvest(sourceVar));
     		if (creep.harvest(sourceVar) == ERR_NOT_IN_RANGE)
     		{
     			//console.log("I am an idiot");
@@ -113,7 +116,7 @@ module.exports = function(creep)
     }
     else
     {
-        if (Game.flags.rallyFlag && Game.flags.rallyFlag.room && Game.flags.rallyFlag.room.name == creep.room.name)
+        if (Game.flags.rallyFlag && Game.flags.rallyFlag.room && Game.flags.rallyFlag.room.name == creep.room.name && Game.flags.rallyFlag.room.name != creep.memory.spawnRoom)
         {
             Game.flags.rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
         }

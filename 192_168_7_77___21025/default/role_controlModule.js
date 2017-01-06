@@ -26,9 +26,22 @@ module.exports = function(creep)
         {
             if (!creep.room.controller.my)
             {
-                if (creep.claimController(creep.room.controller) == ERR_NOT_IN_RANGE)
+                if (creep.room.controller.level > 0)
                 {
-                    creep.moveTo(creep.room.controller);
+                    //hank. I need at least 5 claim parts to do this
+                    //console.log(creep.attackController(creep.room.controller));
+                    if (creep.attackController(creep.room.controller) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(creep.room.controller);
+                    }
+                }
+                else
+                {
+                    var result = creep.claimController(creep.room.controller);
+                    if ( result == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(creep.room.controller);
+                    }
                 }
             }
             else

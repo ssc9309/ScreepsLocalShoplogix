@@ -85,7 +85,8 @@ module.exports = function(spawnName, buildingMaxHealthVar)
 
         if (constSites.length > 0)
         {
-            Game.flags.rangeBuild.setPosition(spawn.room.controller.pos);
+            //i don't know how to create a new flag...
+            //Game.flags.rangeBuild.setPosition(spawn.room.controller.pos);
         }
     }
     

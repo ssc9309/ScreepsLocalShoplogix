@@ -62,9 +62,11 @@ module.exports = function(creep)
     }
     else if (damagedCreep)
     {
+        
+        creep.moveTo(damagedCreep);
         if (creep.heal(damagedCreep) == ERR_NOT_IN_RANGE)
         {
-            creep.moveTo(damagedCreep);
+            //creep.moveTo(damagedCreep);
         }
     }
     else if (rallyFlag)

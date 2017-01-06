@@ -232,7 +232,7 @@ module.exports = function(spawn)
 			}
 			else if (bodyTypeToMake == 'army')
 			{
-				body.push(TOUGH);
+				//body.push(TOUGH);
 				body.push(RANGED_ATTACK);
 				body.push(MOVE);
 			}
@@ -287,9 +287,9 @@ module.exports = function(spawn)
 			}
 			else if (bodyTypeToMake == 'healer')
 			{
-			    body.push(TOUGH);
+			    //body.push(TOUGH);
 				body.push(HEAL);
-				body.push(MOVE);
+				//body.push(MOVE);
 				body.push(MOVE);
 			}
 			else if (bodyTypeToMake == 'tank')
@@ -309,7 +309,8 @@ module.exports = function(spawn)
 			}
 			else if (bodyTypeToMake == 'fastCat')
 			{
-			    body.push(RANGED_ATTACK);
+			    //body.push(RANGED_ATTACK);
+			    body.push(ATTACK);
 			    body.push(MOVE);
 			    body.push(MOVE);
 			    body.push(MOVE);
