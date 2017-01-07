@@ -19,13 +19,13 @@ module.exports = function(spawn)
     {
     	spawnMemory.transferLimit = 1;
     }
-    if (spawnMemory.truckLimit === undefined)
-    {
-        spawnMemory.truckLimit = 2;
-    }
     if (spawnMemory.minerLimit === undefined)
     {
         spawnMemory.minerLimit = creep.room.find(FIND_SOURCES).length;
+    }
+    if (spawnMemory.truckLimit === undefined)
+    {
+        spawnMemory.truckLimit = spawnMemory.minerLimit;
     }
     if (spawnMemory.buildLimit === undefined)
     {
@@ -84,6 +84,10 @@ module.exports = function(spawn)
     if (spawnMemory.mineralHarvesterLimit === undefined)
     {
         spawnMemory.mineralHarvesterLimit = 0;
+    }
+    if (spawnMemory.fastCatLimit === undefined)
+    {
+        spawnMemory.fastCatLimit = 0;
     }
 
 

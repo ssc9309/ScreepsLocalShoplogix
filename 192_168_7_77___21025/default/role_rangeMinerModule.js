@@ -37,7 +37,8 @@ module.exports = function(creep)
 	    		{
 	    		    
 	    			//doesn't have a miner or miner is dead
-	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name || (Game.creeps[flagVar.memory.creepName] && Game.creeps[flagVar.memory.creepName].memory.role != 'rangeMiner'))
+	    			if (!(flagVar.memory.creepName) || (!Game.creeps[flagVar.memory.creepName]) || flagVar.memory.creepName == creep.name || 
+	    			    (Game.creeps[flagVar.memory.creepName] && (Game.creeps[flagVar.memory.creepName].memory.role != 'rangeMiner' || Game.creeps[flagVar.memory.creepName].memory.flagName != flagVar.name)))
 	    			{
 	    				flagVar.memory.creepName = creep.name;
 	    				creep.memory.flagName = flagVar.name;
