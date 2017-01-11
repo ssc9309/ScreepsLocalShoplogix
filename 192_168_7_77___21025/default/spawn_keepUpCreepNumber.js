@@ -22,6 +22,7 @@ module.exports = function(spawn)
 	var fastCatCount = 0;
 	var safeModeCheckerCount = 0;
 	var mineralHarvesterCount = 0;
+	var mineralTransferCount = 0;
 
 	var bodyTypeToMake = '';
 	var body = [];
@@ -104,6 +105,10 @@ module.exports = function(spawn)
 			{
 			    mineralHarvesterCount++;
 			}
+			else if (creepRole == 'mineralTransfer')
+			{
+			    mineralTransferCount++;
+			}
 		}
 	}
 
@@ -180,6 +185,10 @@ module.exports = function(spawn)
 	{
 		bodyTypeToMake = 'mineralHarvester';
 	}
+	else if (mineralTransferCount < spawnMemory.mineralTransferLimit)
+	{
+	    bodyTypeToMake = 'mineralTransfer';
+	}
 
 
 	//console.log(bodyTypeToMake);
@@ -196,7 +205,7 @@ module.exports = function(spawn)
 			// _.clone() will take the value
 			prevBody = _.clone(body);
 
-			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer')
+			if (bodyTypeToMake == 'truck' || bodyTypeToMake == 'transfer' || bodyTypeToMake == 'mineralTransfer')
 			{	
 				body.push(MOVE);
 				body.push(CARRY);

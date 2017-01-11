@@ -13,7 +13,7 @@ module.exports = function(creep)
     
     var rallyFlag = Game.flags.rallyFlag;
     
-    if (creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
+    if (creep.room.controller && creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
     {
         if (rallyFlag)
         {

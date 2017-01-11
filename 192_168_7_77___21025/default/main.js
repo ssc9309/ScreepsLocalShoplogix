@@ -13,6 +13,7 @@ var healerModule = require('role_healerModule');
 var tankModule = require('role_tankModule');
 var safeModeCheckerModule = require('role_safeModeCheckerModule');
 var mineralHarvesterModule = require('role_mineralHarvesterModule');
+var mineralTransferModule = require('role_mineralTransferModule'); 
 
 var spawnModule = require('spawnModule');
 
@@ -115,6 +116,10 @@ module.exports.loop = function()
         else if (creepRole == 'mineralHarvester')
         {
             mineralHarvesterModule(creep);
+        }
+        else if (creepRole == 'mineralTransfer')
+        {
+            mineralTransferModule(creep);
         }
     }
     

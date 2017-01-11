@@ -21,7 +21,7 @@ module.exports = function(spawn)
     }
     if (spawnMemory.minerLimit === undefined)
     {
-        spawnMemory.minerLimit = creep.room.find(FIND_SOURCES).length;
+        spawnMemory.minerLimit = spawn.room.find(FIND_SOURCES).length;
     }
     if (spawnMemory.truckLimit === undefined)
     {
@@ -89,7 +89,12 @@ module.exports = function(spawn)
     {
         spawnMemory.fastCatLimit = 0;
     }
-
+    if (spawnMemory.mineralTransferLimit === undefined)
+    {
+        spawnMemory.mineralTransferLimit = 0;
+    }
+    
+    //delete spawnMemory.mineralTransfer;
 
     //if there is no construction sites, no building units
     //console.log(Game.spawns[spawn].room);
@@ -197,15 +202,18 @@ module.exports = function(spawn)
     //change the range miner & truck number depending on the range flags
     spawnMemory.rangeMinerLimit = 0;
     spawnMemory.rangeTruckLimit = 0;
-    for (var name in Game.flags)
+    if (storageVar)
     {
-        var flagVar = Game.flags[name];
-        if (flagVar.color == COLOR_YELLOW)
+        for (var name in Game.flags)
         {
-            if (flagVar.memory.spawnRoom == spawn.room.name)
+            var flagVar = Game.flags[name];
+            if (flagVar.color == COLOR_YELLOW)
             {
-                spawnMemory.rangeMinerLimit++;
-                spawnMemory.rangeTruckLimit++;
+                if (flagVar.memory.spawnRoom == spawn.room.name)
+                {
+                    spawnMemory.rangeMinerLimit++;
+                    spawnMemory.rangeTruckLimit++;
+                }
             }
         }
     }
@@ -227,17 +235,38 @@ module.exports = function(spawn)
         //console.log(RESOURCE_ZYNTHIUM);
         //console.log(RESOURCE_ENERGY);
     }
+    /*
+    if (spawn.room.name == 'W8N8')
+    {
+        console.log(terminalVar && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity / 4));
+    }
+    */
+    //console.log(terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity / 4); 
 
+    //hank, figure out how to store more minerals
     if ((mineralVar.mineralType == RESOURCE_KEANIUM || mineralVar.mineralType == RESOURCE_LEMERGIUM || mineralVar.mineralType == RESOURCE_ZYNTHIUM || mineralVar.mineralType == RESOURCE_UTRIUM) && 
         extractorVar.length > 0 &&
         mineralVar.mineralAmount > 0 &&
-        terminalVar && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity / 4))
+        terminalVar)// && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity / 4))
     {
         spawnMemory.mineralHarvesterLimit = 1;
     }
     else
     {
         spawnMemory.mineralHarvesterLimit = 0;
+    }
+    
+    //hank, this is hardcoded for shoplogix game only...
+    if (spawn.room.name == 'W8N8')
+    {
+        if (terminalVar && _.sum(terminalVar.store) > 0)
+        {
+            spawnMemory.mineralTransferLimit = 1;
+        }
+        else
+        {
+            spawnMemory.mineralTransferLimit = 0;
+        }
     }
 
     //console.log(spawn.room.find(FIND_MINERALS)[0].density);
