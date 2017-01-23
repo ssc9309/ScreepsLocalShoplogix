@@ -169,7 +169,12 @@ module.exports = function(spawn)
     }
 
     //playing with upgrade limit 
-    if (storageVar)
+    
+    if (spawn.room.controller.level >= 8)
+    {
+        spawnMemory.upgradeLimit = 1;
+    }
+    else if (storageVar)
     {
         if (storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity * 0.75)
         {
@@ -247,7 +252,7 @@ module.exports = function(spawn)
     if ((mineralVar.mineralType == RESOURCE_KEANIUM || mineralVar.mineralType == RESOURCE_LEMERGIUM || mineralVar.mineralType == RESOURCE_ZYNTHIUM || mineralVar.mineralType == RESOURCE_UTRIUM) && 
         extractorVar.length > 0 &&
         mineralVar.mineralAmount > 0 &&
-        terminalVar)// && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity / 4))
+        terminalVar && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity * 0.8))
     {
         spawnMemory.mineralHarvesterLimit = 1;
     }

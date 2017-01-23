@@ -14,9 +14,17 @@ module.exports = function(creep)
     {
         if (creep.carry.energy < creep.carryCapacity)
         {
+            var terminalVar = creep.room.terminalVar;
             var storageVar = creep.room.storage;
-            
-            if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
+
+            if (terminalVar && storageVar && storageVar.store[RESOURCE_ENERGY] < storageVar.storeCapacity / 2 && terminalVar.store[RESOURCE_ENERGY] > 0)
+            {
+                if (creep.withdraw(terminalVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(terminalVar);
+                }
+            }
+            else if (storageVar && storageVar.store[RESOURCE_ENERGY] > 0)
             {
                 if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                 {
@@ -67,6 +75,19 @@ module.exports = function(creep)
                     if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
                     {
                         creep.moveTo(targetExt);
+                    }
+                }
+                else
+                {
+                    var terminalVar = creep.room.terminal;
+                    var storageVar = creep.room.storage;
+
+                    if (terminalVar && storageVar && storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2 && terminalVar.store[RESOURCE_ENERGY] < terminalVar.storeCapacity * 0.1)
+                    {
+                        if (creep.transfer(terminalVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(terminalVar);
+                        }
                     }
                 }
             }

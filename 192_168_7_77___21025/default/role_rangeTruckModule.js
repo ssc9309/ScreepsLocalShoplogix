@@ -118,11 +118,39 @@ module.exports = function(creep)
         		    else
         		    {
         		        var storageVar = Game.getObjectById(creepMemory.storageID);
-    
-            			if (creep.transfer(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-            			{
-            				creep.moveTo(storageVar);
-            			}
+
+                        if(storageVar.room.name != creep.room.name)
+                        {
+                            creep.moveTo(storageVar)
+                        }
+                        else
+                        {
+                            var targetExt = creep.pos.findClosestByPath(FIND_MY_STRUCTURES,
+                            {
+                                filter: function(object)
+                                {
+                                    return (object.structureType == STRUCTURE_EXTENSION || 
+                                            object.structureType == STRUCTURE_SPAWN) && 
+                                            (object.energy < object.energyCapacity) &&
+                                            object.room.name == creep.room.name;
+                                }
+                            });
+                            
+                            if (targetExt)
+                            {
+                                if (creep.transfer(targetExt, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                                {
+                                    creep.moveTo(targetExt);
+                                }
+                            }
+                            else
+                            {
+                                if (creep.transfer(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                                {
+                                    creep.moveTo(storageVar);
+                                }
+                            }
+                        }            			
         		    }
         		}
     	    }

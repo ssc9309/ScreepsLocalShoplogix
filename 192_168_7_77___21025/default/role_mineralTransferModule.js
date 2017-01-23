@@ -12,6 +12,7 @@ module.exports = function(creep)
     creep.say("MT");
     
     var terminalVar = creep.room.terminal;
+    var storageVar = creep.room.storage;
     
 	/*
     var labs = creep.room.find(FIND_MY_STRUCTURES,
@@ -28,14 +29,39 @@ module.exports = function(creep)
 	var lab1 = Game.getObjectById('bcddcde4ea3567f');
 	var lab2 = Game.getObjectById('3fab9357ddfd192');
 	var lab3 = Game.getObjectById('f4b1e1f8c783a49');
+	var lab4 = Game.getObjectById('0fd5d18db0e415c');
+	var lab5 = Game.getObjectById('e239d972de9f63e');
+	var lab6 = Game.getObjectById('2b97a1d8e4ea6aa');
+	var lab7 = Game.getObjectById('5b58b90b92d39a5');
+	var lab8 = Game.getObjectById('03bfae65d8dbef0');
+
 	//73506e7007ee130
 	//bcddcde4ea3567f
 	//3fab9357ddfd192
 	//f4b1e1f8c783a49
 	//0fd5d18db0e415c
 	//e239d972de9f63e
+	//2b97a1d8e4ea6aa
+	//5b58b90b92d39a5
+	//03bfae65d8dbef0
     
-    if (terminalVar)// && labs.length > 5)
+    //if (terminalVar)// && labs.length > 5)
+    /*
+
+    if (_.sum(creep.carry) <= 0)
+    {
+    	creep.withdraw(lab2, RESOURCE_ZYNTHIUM);
+    	creep.moveTo(lab2);
+    }
+    else
+    {
+    	creep.transfer(terminalVar, RESOURCE_ZYNTHIUM);
+    	creep.moveTo(terminalVar);
+    }
+	*/
+    
+
+    if (terminalVar)
     {
     	var terminalResourceType = '';
 
@@ -133,6 +159,28 @@ module.exports = function(creep)
 	    			}
 	    		}
     		}
+        }
+
+        if (terminalResourceType == '')
+        {
+        	//console.log(storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2);
+        	if (storageVar && storageVar.store[RESOURCE_ENERGY] > storageVar.storeCapacity / 2 && terminalVar.store[RESOURCE_ENERGY] < terminalVar.storeCapacity * 0.1)
+        	{
+        		if (_.sum(creep.carry) <= 0)
+			    {
+			    	if (creep.withdraw(storageVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+			    	{
+				    	creep.moveTo(storageVar);
+				    }
+			    }
+			    else
+			    {
+			    	if (creep.transfer(terminalVar, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+			    	{
+			    		creep.moveTo(terminalVar);
+			    	}
+			    }
+        	}
         }
     }
 };

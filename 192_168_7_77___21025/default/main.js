@@ -148,4 +148,38 @@ module.exports.loop = function()
     //console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
     startCPU = Game.cpu.getUsed();
     //console.log();
+
+    for (var name in Game.rooms)
+    {
+        var terminalFromVar = Game.rooms[name].terminal;
+
+        if(terminalFromVar)
+        {
+            if (terminalFromVar.room.controller.level >= 8 && terminalFromVar.store[RESOURCE_ENERGY] >= terminalFromVar.storeCapacity * 0.1) 
+            {
+                //console.log(terminalVar.room.name);
+                for(var name2 in Game.rooms)
+                {
+                    var terminalToVar = Game.rooms[name2].terminal;
+                    if (terminalToVar && terminalToVar.room.controller.level < 8 && terminalToVar.store[RESOURCE_ENERGY] < terminalToVar.storeCapacity * 0.1)
+                    {
+                        //var storageVar = Game.rooms[name2].storage;
+                        console.log("Terminal Result: " + terminalFromVar.send(RESOURCE_ENERGY, terminalToVar.storeCapacity * 0.1 - terminalToVar.store[RESOURCE_ENERGY], terminalToVar.room.name));
+                    }
+                }
+            }
+
+/*
+            var storageVar = Game.rooms[name].storage;
+
+            if (terminalVar.store[RESOURCE_ENERGY] >= terminalVar.storeCapacity * 0.1)
+            {
+                if (storageVar.store[RESOURCE_ENERGY] < storageVar.storeCapacity / 2)
+                {
+
+                }
+            }
+            */
+        }
+    }
 }

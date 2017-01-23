@@ -238,6 +238,14 @@ module.exports = function(spawn)
 				body.push(MOVE);
 				body.push(CARRY);
 				body.push(WORK);
+				
+				if (bodyTypeToMake == 'upgrade' && spawn.room.controller.level >= 8)
+				{
+				    if (body.length > 3)
+				    {
+				        break;
+				    }
+				}
 			}
 			else if (bodyTypeToMake == 'army')
 			{

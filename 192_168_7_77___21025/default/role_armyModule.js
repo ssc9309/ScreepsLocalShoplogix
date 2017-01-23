@@ -52,7 +52,7 @@ module.exports = function(creep)
     
     //console.log(creep.room.controller.safeMode);
     
-    if (creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
+    if (creep.room.controller && creep.room.controller.owner && !creep.room.controller.my && creep.room.controller.safeMode)
     {
         if (rallyFlag)
         {
@@ -226,7 +226,7 @@ module.exports = function(creep)
         else
         {
             //if i destroyed the spawn, then let's go back
-            if (creep.room.controller.owner && !creep.room.controller.my)
+            if (creep.room.controller && creep.room.controller.owner && !creep.room.controller.my)
             {
                 rallyFlag.setPosition(new RoomPosition(25, 25, creep.memory.spawnRoom));
             }
@@ -235,7 +235,7 @@ module.exports = function(creep)
             {
                 filter: function(object)
                 {
-                    return !object.room.controller.safeMode && object.structureType != STRUCTURE_CONTROLLER;
+                    return object.room.controller && !object.room.controller.safeMode && object.structureType != STRUCTURE_CONTROLLER;
                 }
             });
             //console.log(hostileStructure.structureType);
