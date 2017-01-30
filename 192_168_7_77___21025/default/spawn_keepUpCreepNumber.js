@@ -141,6 +141,14 @@ module.exports = function(spawn)
 		//Hank. 20 upgrade parts = 2 max resource mining
 		bodyTypeToMake = 'upgrade';
 	}
+	else if (mineralHarvesterCount < spawnMemory.mineralHarvesterLimit)
+	{
+		bodyTypeToMake = 'mineralHarvester';
+	}
+	else if (mineralTransferCount < spawnMemory.mineralTransferLimit)
+	{
+	    bodyTypeToMake = 'mineralTransfer';
+	}
 	else if (repairCount < spawnMemory.repairLimit)
 	{
 		bodyTypeToMake = 'repair';
@@ -180,14 +188,6 @@ module.exports = function(spawn)
 	else if (safeModeCheckerCount < spawnMemory.safeModeCheckerLimit && Game.time >= spawnMemory.safeModeEndsAt)
 	{
 	    bodyTypeToMake = 'safeModeChecker';
-	}
-	else if (mineralHarvesterCount < spawnMemory.mineralHarvesterLimit)
-	{
-		bodyTypeToMake = 'mineralHarvester';
-	}
-	else if (mineralTransferCount < spawnMemory.mineralTransferLimit)
-	{
-	    bodyTypeToMake = 'mineralTransfer';
 	}
 
 

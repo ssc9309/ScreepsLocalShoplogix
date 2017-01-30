@@ -50,18 +50,36 @@ module.exports = function(creep)
     }
     else
     {
-        var source = Game.getObjectById(creep.memory.sourceID);
-
-
-        if (creep.carry.energy >= creep.carryCapacity)
+        //get rid of duplicate sourceID
+        var minersInRoom = creep.room.find(FIND_MY_CREEPS,
         {
-            creep.drop(RESOURCE_ENERGY);
+            filter: function(object)
+            {
+                return object.memory.role == 'miner' && 
+                        object.memory.sourceID &&
+                        object.memory.sourceID == creep.memory.sourceID &&
+                        object.name != creep.name;
+            }
+        });
+        //console.log(minersInRoom.length);
+        if (minersInRoom.length > 0)
+        {
+            delete creep.memory.sourceID;
         }
         else
         {
-            if (creep.harvest(source) == ERR_NOT_IN_RANGE)
+            var source = Game.getObjectById(creep.memory.sourceID);
+
+            if (creep.carry.energy >= creep.carryCapacity)
             {
-                creep.moveTo(source);
+                creep.drop(RESOURCE_ENERGY);
+            }
+            else
+            {
+                if (creep.harvest(source) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(source);
+                }
             }
         }
     }

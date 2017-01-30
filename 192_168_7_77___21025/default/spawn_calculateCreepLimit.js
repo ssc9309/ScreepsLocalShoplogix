@@ -196,10 +196,11 @@ module.exports = function(spawn)
         }
         else
         {
-            if (spawnMemory.upgradeLimit == 2)
-            {
-                spawnMemory.upgradeLimit--;
-            }
+            //if (spawnMemory.upgradeLimit == 2)
+            //{
+                //spawnMemory.upgradeLimit--;
+            //}
+            spawnMemory.upgradeLimit = 1;
         }
     }
 
@@ -252,7 +253,7 @@ module.exports = function(spawn)
     if ((mineralVar.mineralType == RESOURCE_KEANIUM || mineralVar.mineralType == RESOURCE_LEMERGIUM || mineralVar.mineralType == RESOURCE_ZYNTHIUM || mineralVar.mineralType == RESOURCE_UTRIUM) && 
         extractorVar.length > 0 &&
         mineralVar.mineralAmount > 0 &&
-        terminalVar && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity * 0.8))
+        terminalVar && (!terminalVar.store[mineralVar.mineralType] || terminalVar.store[mineralVar.mineralType] < terminalVar.storeCapacity * 0.5))
     {
         spawnMemory.mineralHarvesterLimit = 1;
     }
@@ -262,7 +263,8 @@ module.exports = function(spawn)
     }
     
     //hank, this is hardcoded for shoplogix game only...
-    if (spawn.room.name == 'W8N8')
+    //if (spawn.room.name == 'W8N8')
+    if (spawn.room.controller.level >= 8)
     {
         if (terminalVar && _.sum(terminalVar.store) > 0)
         {

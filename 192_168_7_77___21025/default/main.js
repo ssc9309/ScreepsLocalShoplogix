@@ -143,6 +143,41 @@ module.exports.loop = function()
             //console.log("Hello");
 
         }
+        else if (name == 'nuke')
+        {
+            var nukerVar = Game.spawns.Spawn1.pos.findClosestByPath(FIND_MY_STRUCTURES,
+            {
+                filter: function(object)
+                {
+                    return object.structureType == STRUCTURE_NUKER && object.cooldown <= 0;
+                }
+            });
+            
+            if (nukerVar)
+            {
+                nukerVar.launchNuke(flag.pos);
+                flag.remove();
+            }
+            else
+            {
+                nukerVar = Game.spawns.Spawn2.pos.findClosestByPath(FIND_MY_STRUCTURES,
+                {
+                    filter: function(object)
+                    {
+                        return object.structureType == STRUCTURE_NUKER && object.cooldown <= 0;
+                    }
+                });
+                if (nukerVar)
+                {
+                    nukerVar.launchNuke(flag.pos);
+                    flag.remove();
+                }
+                else
+                {
+                    //console.log("All nukers are on cooldown");
+                }
+            }
+        }
     } 
     
     //console.log("Flags: " + parseInt((Game.cpu.getUsed() - startCPU)));
@@ -155,6 +190,14 @@ module.exports.loop = function()
 
         if(terminalFromVar)
         {
+            var nukerFromVar = terminalFromVar.room.find(FIND_MY_STRUCTURES, 
+            {
+                filter: function(object)
+                {
+                    return object.structureType == STRUCTURE_NUKER && object.ghodium < object.ghodiumCapacity;
+                }
+            });
+            //Donate energy to Low Level Low Energy room
             if (terminalFromVar.room.controller.level >= 8 && terminalFromVar.store[RESOURCE_ENERGY] >= terminalFromVar.storeCapacity * 0.1) 
             {
                 //console.log(terminalVar.room.name);
@@ -163,11 +206,83 @@ module.exports.loop = function()
                     var terminalToVar = Game.rooms[name2].terminal;
                     if (terminalToVar && terminalToVar.room.controller.level < 8 && terminalToVar.store[RESOURCE_ENERGY] < terminalToVar.storeCapacity * 0.1)
                     {
-                        //var storageVar = Game.rooms[name2].storage;
-                        console.log("Terminal Result: " + terminalFromVar.send(RESOURCE_ENERGY, terminalToVar.storeCapacity * 0.1 - terminalToVar.store[RESOURCE_ENERGY], terminalToVar.room.name));
+                        var costFactor = Math.log(0.1 * Game.map.getRoomLinearDistance(terminalToVar.room.name, terminalFromVar.room.name) + 0.9) + 0.1 + 1;
+                        var sendAmount = Math.floor((terminalToVar.storeCapacity * 0.1 - terminalToVar.store[RESOURCE_ENERGY]) / costFactor);
+
+                        if (sendAmount < 100)
+                        {
+                            sendAmount = 100;
+                        }
+
+                        console.log("Terminal Result: " + terminalFromVar.send(RESOURCE_ENERGY, sendAmount, terminalToVar.room.name));
+                        console.log("From: " + terminalFromVar.room.name);
+                        console.log("To: " + terminalToVar.room.name);
+                        console.log("Sent: " + sendAmount);
+                        //
+                        //console.log("Factor: " + costFactor);
+                        break; 
                     }
                 }
             }
+            //handout ghodium to the rooms with nuker but low energy
+            else if (nukerFromVar.length <= 0 && terminalFromVar.store[RESOURCE_GHODIUM] >= 5000)
+            {
+                for(var name2 in Game.rooms)
+                {
+                    var terminalToVar = Game.rooms[name2].terminal;
+                    if (terminalToVar)// && terminalToVar.room.controller.level < 8 && terminalToVar.store[RESOURCE_ENERGY] < terminalToVar.storeCapacity * 0.1)
+                    {
+                        var nukerToVar = terminalToVar.room.find(FIND_MY_STRUCTURES,
+                        {
+                            filter: function(object)
+                            {
+                                return object.structureType == STRUCTURE_NUKER && object.ghodium < object.ghodiumCapacity;
+                            }
+                        });
+                        
+                        if (nukerToVar.length > 0 && (!terminalToVar.store[RESOURCE_GHODIUM] || terminalToVar.store[RESOURCE_GHODIUM] < 5000))
+                        {
+                            var sendAmount = 5000;
+                            if (terminalToVar.store[RESOURCE_GHODIUM] < 5000)
+                            {
+                                sendAmount = 5000 - terminalToVar.store[RESOURCE_GHODIUM];
+                            }
+                            
+                            if (terminalFromVar.store[RESOURCE_ENERGY] >= Game.market.calcTransactionCost(sendAmount, terminalFromVar.room.name, terminalToVar.room.name))
+                            {
+                                console.log("Ghodium Terminal Result: " + terminalFromVar.send(RESOURCE_GHODIUM, sendAmount, terminalToVar.room.name));
+                                console.log("From: " + terminalFromVar.room.name);
+                                console.log("To: " + terminalToVar.room.name);
+                                console.log("Sent: " + sendAmount);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (terminalFromVar.room.name != 'W8N8')
+            {
+                var mineralResourceType = terminalFromVar.room.find(FIND_MINERALS)[0].mineralType;
+                var terminalToVar = Game.rooms['W8N8'].terminal;
+                var sendAmount = 0;
+                //console.log(terminalFromVar.store[mineralResourceType] >= 3000 - terminalToVar.store[mineralResourceType]);
+                //if ((terminalToVar.store[mineralResourceType] === undefined || terminalToVar.store[mineralResourceType] < 3000) 
+                    //&& terminalFromVar.store[mineralResourceType] >= 3000 - terminalToVar.store[mineralResourceType])
+                if ((terminalToVar.store[mineralResourceType] === undefined && terminalFromVar.store[mineralResourceType] >= 3000) ||
+                    terminalToVar.store[mineralResourceType] < 3000 && terminalFromVar.store[mineralResourceType] >= 3000 - terminalToVar.store[mineralResourceType])
+                {
+                    sendAmount = terminalToVar.store[mineralResourceType] === undefined ? 3000 : 3000 - terminalToVar.store[mineralResourceType];
+                    if (terminalFromVar.store[RESOURCE_ENERGY] >= Game.market.calcTransactionCost(sendAmount, terminalFromVar.room.name, terminalToVar.room.name))
+                    {
+                        console.log(mineralResourceType + " Terminal Result: " + terminalFromVar.send(mineralResourceType, sendAmount, terminalToVar.room.name));
+                        console.log("From: " + terminalFromVar.room.name);
+                        console.log("To: " + terminalToVar.room.name);
+                        console.log("Sent: " + sendAmount);
+                    }
+                    
+                }
+
+            }
+
 
 /*
             var storageVar = Game.rooms[name].storage;

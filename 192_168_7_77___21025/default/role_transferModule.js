@@ -14,7 +14,7 @@ module.exports = function(creep)
     {
         if (creep.carry.energy < creep.carryCapacity)
         {
-            var terminalVar = creep.room.terminalVar;
+            var terminalVar = creep.room.terminal;
             var storageVar = creep.room.storage;
 
             if (terminalVar && storageVar && storageVar.store[RESOURCE_ENERGY] < storageVar.storeCapacity / 2 && terminalVar.store[RESOURCE_ENERGY] > 0)

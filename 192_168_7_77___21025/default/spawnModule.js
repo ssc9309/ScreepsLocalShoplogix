@@ -90,7 +90,8 @@ module.exports = function(spawnName, buildingMaxHealthVar)
         }
     }
     
-    
+    var letsGetCooking = require('structure_labModule');
+    letsGetCooking(spawn);
     
     
 }
