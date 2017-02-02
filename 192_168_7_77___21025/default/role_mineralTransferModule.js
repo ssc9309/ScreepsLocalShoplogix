@@ -113,8 +113,10 @@ module.exports = function(creep)
 	}
     else 
     {
+        var ghodiumTransferDone = true;
     	if (lab8.mineralAmount >= lab8.mineralCapacity || creep.carry[RESOURCE_GHODIUM] > 0 || lab8.mineralAmount >= creep.carryCapacity)
     	{
+    		ghodiumTransferDone = false;
     		var nukerVar = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, 
     		{
     			filter: function(object)
@@ -124,6 +126,7 @@ module.exports = function(creep)
     		});
     
     		//console.log(nukerVar.hits);
+    		//console.log(nukerVar);
     		if (nukerVar)
     		{
     			if (_.sum(creep.carry) <= 0)
@@ -172,18 +175,23 @@ module.exports = function(creep)
     		    }
     		    else
     		    {
-        			if (_.sum(creep.carry) > 0)
+        			if (_.sum(creep.carry) > 0 && creep.carry[RESOURCE_GHODIUM])
         	        {
         	    		if (creep.transfer(lab8, RESOURCE_GHODIUM) == ERR_NOT_IN_RANGE)
         	            {
         	            	creep.moveTo(lab8);
         	            }
         	        }
+        	        else
+        	        {
+        	            ghodiumTransferDone = true;
+        	        }
     		    }
     		}
     	}
     	else if (lab9.mineralAmount >= lab9.mineralCapacity || creep.carry[RESOURCE_GHODIUM] > 0 || lab9.mineralAmount >= creep.carryCapacity)
     	{
+    		ghodiumTransferDone = false;
     		var nukerVar = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, 
     		{
     			filter: function(object)
@@ -241,17 +249,24 @@ module.exports = function(creep)
     		    }
     		    else
     		    {
-        			if (_.sum(creep.carry) > 0)
+        			if (_.sum(creep.carry) > 0 && creep.carry[RESOURCE_GHODIUM])
         	        {
         	    		if (creep.transfer(lab9, RESOURCE_GHODIUM) == ERR_NOT_IN_RANGE)
         	            {
         	            	creep.moveTo(lab9);
         	            }
         	        }
+        	        else
+        	        {
+        	            ghodiumTransferDone = true;
+        	        }
     		    }
     		}
     	}
-        else if (terminalVar)
+
+    	//console.log(creep.room.name + ghodiumTransferDone);
+    	
+        if (terminalVar && ghodiumTransferDone)
         //else if (false)
         {
         	var terminalResourceType = '';
