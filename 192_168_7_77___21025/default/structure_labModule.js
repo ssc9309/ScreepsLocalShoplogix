@@ -34,6 +34,11 @@ module.exports = function (spawn)
 	//L  U
 	//Z  K
 
+	if(!lab0)
+	{
+		return;
+	}
+
 	//console.log(lab0.mineralAmount >= lab0.mineralCapacity);
 	if (lab0.mineralAmount > 0 && lab1.mineralAmount > 0)
 	{
